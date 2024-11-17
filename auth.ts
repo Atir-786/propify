@@ -52,13 +52,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     signIn: "/login",
   },
-  // signIn: async ({ user, account }) => {
-  //   if (account?.provider === "google")
-  //     await
-  //     try {
-  //       const { email, name, image, id } = user;
-  //     } catch (error) {
-  //       throw new Error("error ");
-  //     }
-  // },
+  secret: process.env.AUTH_SECRET,
 });
