@@ -12,7 +12,10 @@ const LoginForm = () => {
       action={async (formData) => {
         const email = formData.get("email") as string;
         const password = formData.get("password") as string;
-        if (!email || !password) return toast("enter all fields");
+        if (!email || !password) {
+          toast("enter all fields");
+          return;
+        }
         const toastId = toast.loading("logging in");
         const error = await login(email, password);
 
@@ -52,8 +55,10 @@ const SignupForm = () => {
         const lastName = formData.get("lastname") as string;
         const email = formData.get("email") as string;
         const password = formData.get("password") as string;
-        if (!firstName || !lastName || !email || !password)
-          return toast.error("plz fill all the fields");
+        if (!firstName || !lastName || !email || !password) {
+          toast.error("plz fill all the fields");
+          return;
+        }
         // console.log("before connection");
         const error = await register(firstName, lastName, email, password);
         if (!error) {
