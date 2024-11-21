@@ -17,7 +17,7 @@ const PropertyCard = ({ post }) => {
   } = post;
 
   return (
-    <div className="max-w-sm mx-auto border rounded-lg shadow-lg overflow-hidden bg-white transition-transform transform hover:scale-105">
+    <li className="startup-card group">
       {/* Image Section */}
       <div className="relative h-48">
         <Image
@@ -51,7 +51,7 @@ const PropertyCard = ({ post }) => {
           View Details
         </button>
       </div>
-    </div>
+    </li>
   );
 };
 
