@@ -46,7 +46,8 @@ async function page({
     <>
       <section className="pink_container">
         <h1 className="heading">
-          Pitch Your Property ,<br /> Connect with Real Estate
+          Showcase Properties ,
+          <br /> Connect with Real Estate
         </h1>
         <p className="sub-heading !max-w-3xl">
           Find the perfect home, apartment, or land with ease. Explore a wide
