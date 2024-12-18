@@ -1,8 +1,12 @@
 import connectDB from "@/lib/db";
 import { Property } from "@/models/Property";
 import { ObjectId } from "mongodb";
+interface PageProps {
+  params: { id: string }; // The correct type for params
+}
 const page = async ({ params }: { params: { id: string } }) => {
-  const { id } = params;
+  const { id } = await params;
+  // console.log(params);
   await connectDB();
   try {
     const property = await Property.findOne({ _id: new ObjectId(id) });
@@ -11,6 +15,7 @@ const page = async ({ params }: { params: { id: string } }) => {
         <h1 className="text-2xl font-bold">{property.title}</h1>
         <p>{property.description}</p>
         <p>Price: ${property.price}</p>
+        <p>{id}</p>
         {/* Add other property details as needed */}
       </div>
     );
