@@ -1,8 +1,7 @@
 import connectDB from "@/lib/db";
 import { Property } from "@/models/Property";
-import React from "react";
 import { ObjectId } from "mongodb";
-const page = async (params: { id: string }) => {
+const page = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
   await connectDB();
   try {
