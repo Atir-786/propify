@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 interface PageProps {
   params: { id: string }; // The correct type for params
 }
-const page = async ({ params }: { params: { id: string } }) => {
+const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
   // console.log(params);
   await connectDB();
