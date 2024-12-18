@@ -3,9 +3,10 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { register } from "@/action/user";
-import { auth } from "@/auth";
+import { auth, signIn } from "@/auth";
 import { redirect } from "next/navigation";
 import { SignupForm } from "@/components/client/form";
+import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 const Register = async () => {
   const session = await auth();
   const user = session?.user;
@@ -24,6 +25,41 @@ const Register = async () => {
             Login
           </Link>
         </p>
+        <div className="mt-8">
+          <section className="flex items-center justify-between space-x-4">
+            {/* GitHub Sign In */}
+            <form
+              action={async () => {
+                "use server";
+                await signIn("github");
+              }}
+            >
+              <button
+                type="submit"
+                className="flex items-center bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition duration-300"
+              >
+                <IconBrandGithub className="mr-2" />
+                <span>GitHub</span>
+              </button>
+            </form>
+
+            {/* Google Sign In */}
+            <form
+              action={async () => {
+                "use server";
+                await signIn("google");
+              }}
+            >
+              <button
+                type="submit"
+                className="flex items-center bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300"
+              >
+                <IconBrandGoogle className="mr-2" />
+                <span>Google</span>
+              </button>
+            </form>
+          </section>
+        </div>
       </div>
     </div>
   );

@@ -19,29 +19,7 @@ async function page({
   const query = (await searchParams).query;
   await connectDB();
   const properties = await Property.find({});
-  // const propertiesData: Property[] = properties.map((property) => ({
-  //   _id: property._id.toString(),
-  //   title: property.title,
-  //   description: property.description,
-  //   price: property.price,
-  //   location: property.location,
-  //   images: property.images || [],
-  // }));
 
-  const posts = [
-    {
-      _createdAt: new Date(),
-      views: 50,
-      author: { _id: 1, name: "Adrian" },
-      description: "this is the description",
-      image:
-        "https://images.pexels.com/photos/1370704/pexels-photo-1370704.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-      category: "large",
-      title: "A beautiful mansion",
-    },
-  ];
-
-  // const response = await()
   return (
     <>
       <section className="pink_container">
@@ -66,8 +44,8 @@ async function page({
           ))}
         </ul> */}
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
-          {properties.map((post) => (
-            <PropertyCard key={post._id} post={post}></PropertyCard>
+          {properties.map((property) => (
+            <PropertyCard key={property._id} property={property}></PropertyCard>
           ))}
         </ul>
       </section>

@@ -4,6 +4,7 @@ import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import connectDB from "./lib/db";
 import { User } from "@/models/User";
+import { trusted } from "mongoose";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     GitHub({
@@ -51,6 +52,33 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   pages: {
     signIn: "/login",
+  },
+  callbacks: {
+    signIn: async ({ user, account }) => {
+      if (account?.provider === "google") {
+        try {
+          const { email, name } = user;
+          console.log("hiii");
+          await connectDB();
+          const [firstName, ...lastNameParts] = name.split(" ");
+          const lastName = lastNameParts.join(" ") || "";
+          const alreadyUser = await User.findOne({ email });
+          if (!alreadyUser) {
+            console.log(firstName, lastName, email);
+            await User.create({ firstName, lastName, email });
+          }
+          return true;
+        } catch (error) {
+          console.error("error while creating user", error);
+          return false;
+        }
+      }
+      if (account?.provider === "credentials") {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
   secret: process.env.AUTH_SECRET,
 });

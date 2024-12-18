@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { register } from "@/action/user";
 import { addProperty } from "@/action/property";
 import { supabase } from "@/lib/supabase";
+import connectDB from "@/lib/db";
 const LoginForm = () => {
   const router = useRouter();
   return (
@@ -144,6 +145,7 @@ const AddPropertyForm = () => {
         );
         if (!error) {
           toast.success("Registered Successfully");
+
           router.replace("/");
         } else {
           console.log(error);
@@ -236,88 +238,6 @@ const AddPropertyForm = () => {
         </button>
       </div>
     </form>
-
-    // <form
-    //   action={async (formData) => {
-    //     const title = formData.get("title") as string;
-    //     const location = formData.get("location") as string;
-    //     const price = Number(formData.get("price") as string);
-    //     const description = formData.get("description") as string;
-    //     const images = formData.getAll("images") as File[];
-    //     if (!title || !location || !price || !description || !images) {
-    //       toast.error("plzz fill all the fields");
-    //       return;
-    //     }
-    //     // Uplad images to Supabase
-    //     const uploadedImages: string[] = [];
-    //     for (const image of images) {
-    //       const { data, error } = await supabase.storage
-    //         .from("propertyImages")
-    //         .upload(`${Date.now()}_${image.name}`, image);
-    //       if (error) {
-    //         console.log(error.message);
-    //         throw new Error("image upload failed");
-    //       }
-    //       const publicUrl = supabase.storage
-    //         .from("propertyImages")
-    //         .getPublicUrl(data.path).data.publicUrl;
-    //       uploadedImages.push(publicUrl);
-    //     }
-    //     const error = await addProperty(
-    //       title,
-    //       location,
-    //       price,
-    //       description,
-    //       uploadedImages
-    //     );
-    //     if (!error) {
-    //       toast.success("Registered Successfully");
-    //       router.replace("/");
-    //     } else {
-    //       console.log(error);
-    //       toast.error(error);
-    //     }
-    //   }}
-    //   className="space-y-6"
-    // >
-    //   <div className="grid grid-cols-1 gap-4">
-    //     <div>
-    //       <Label htmlFor="title">title</Label>
-    //       <Input id="title" type="text" name="title" />
-    //     </div>
-    //     <div>
-    //       <Label htmlFor="location">location</Label>
-    //       <Input id="location" type="text" name="location" />
-    //     </div>
-    //   </div>
-
-    //   <div className="mt-4">
-    //     <Label htmlFor="price">price</Label>
-    //     <Input id="price" type="number" name="price" />
-    //   </div>
-
-    //   <div className="mt-4">
-    //     <Label htmlFor="description">description</Label>
-    //     <Input id="description" type="text" name="description" />
-    //   </div>
-    //   <div className="mt-4">
-    //     <Label htmlFor="images">Upload Images</Label>
-    //     <Input
-    //       id="images"
-    //       type="file"
-    //       name="images"
-    //       multiple
-    //       accept="image/*"
-    //     />
-    //   </div>
-    //   {/* Submit Button */}
-    //   <button
-    //     type="submit"
-    //     className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition duration-300"
-    //   >
-    //     Create
-    //   </button>
-    // </form>
   );
 };
 

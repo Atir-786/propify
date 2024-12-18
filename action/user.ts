@@ -3,7 +3,7 @@ import connectDB from "@/lib/db";
 import { User } from "@/models/User";
 import { CredentialsSignin } from "next-auth";
 import { redirect } from "next/navigation";
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 const login = async (email: string, password: string) => {
   // "use server";
   try {
@@ -42,4 +42,7 @@ const register = async (
   }
   // redirect("/login");
 };
-export { register, login };
+const signOutUser = async () => {
+  await signOut();
+};
+export { register, login, signOutUser };

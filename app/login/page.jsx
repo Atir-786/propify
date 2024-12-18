@@ -9,7 +9,11 @@ import { LoginForm } from "@/components/client/form";
 const Login = async () => {
   const session = await auth();
   const user = session?.user;
-  if (user) redirect("/");
+
+  if (user) {
+    // console.log(user);
+    redirect("/");
+  }
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
