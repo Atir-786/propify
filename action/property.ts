@@ -4,26 +4,23 @@ import { auth } from "@/auth";
 import connectDB from "@/lib/db";
 import { Property } from "@/models/Property";
 import { User } from "@/models/User";
-// const session = await auth();
-// const user = session.user;
-// console.log(user);
-const addProperty = async (
-  title: string,
-  location: string,
-  price: number,
-  description: string,
-  images: string[]
-) => {
+const addProperty = async (formDetails) => {
   try {
     const session = await auth();
     const { email } = session.user;
+    const { id } = session.user;
     // console.log(user);
     await connectDB();
-    await Property.create({ title, location, price, description, images });
+    const property = await Property.create({ ...formDetails, ownerId: id });
+    const propertyId = property._id;
+    console.log("yetem");
     await User.findOneAndUpdate(
       { email },
       {
-        $push: { properties: { title, location, price, description, images } },
+        // $push: { properties: { title, location, price, description, images } },
+        $push: {
+          properties: propertyId,
+        },
       }
     );
     console.log("property created successfully");

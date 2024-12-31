@@ -3,14 +3,7 @@ import React from "react";
 import PropertyCard from "@/components/PropertyCard";
 import connectDB from "@/lib/db";
 import { Property } from "@/models/Property";
-// type Property = {
-//   _id: string;
-//   title: string;
-//   description: string;
-//   price: number;
-//   location: string;
-//   // images?: string[];
-// };
+
 async function page({
   searchParams,
 }: {
@@ -19,6 +12,7 @@ async function page({
   const query = (await searchParams).query;
   await connectDB();
   const properties = await Property.find({});
+  console.log(properties);
 
   return (
     <>

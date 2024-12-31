@@ -44,7 +44,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           firstName: user.firstName,
           lastName: user.lasttName,
           email: user.email,
-          id: user._id,
+          id: user._id.toString(),
         };
         return userData;
       },
@@ -54,19 +54,37 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signIn: "/login",
   },
   callbacks: {
+    async jwt({ token, user }) {
+      // Include user ID in the token
+      if (user) {
+        token.id = user.id; // Assuming `id` is part of the user object
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      // Pass user ID to the session
+      if (token?.id) {
+        session.user.id = token.id as string;
+      }
+      return session;
+    },
     signIn: async ({ user, account }) => {
-      if (account?.provider === "google") {
+      if (account?.provider === "google" || "github") {
         try {
           const { email, name } = user;
           console.log("hiii");
           await connectDB();
-          const [firstName, ...lastNameParts] = name.split(" ");
+          const [firstName, ...lastNameParts] = name
+            ? name.split(" ")
+            : ["unknown"];
           const lastName = lastNameParts.join(" ") || "";
           const alreadyUser = await User.findOne({ email });
           if (!alreadyUser) {
             console.log(firstName, lastName, email);
             await User.create({ firstName, lastName, email });
           }
+          // Attach MongoDB `_id` to the `user` object
+          user.id = alreadyUser._id.toString(); // Ensure the ID is a string
           return true;
         } catch (error) {
           console.error("error while creating user", error);
