@@ -24,7 +24,8 @@ const LoginForm = () => {
         const error = await login(email, password);
 
         if (!error) {
-          toast.success("success", { id: toastId });
+          toast.success("successss", { id: toastId });
+          console.log("hello");
           router.refresh();
         } else {
           toast.error(String(error), { id: toastId });

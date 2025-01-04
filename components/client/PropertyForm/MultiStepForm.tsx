@@ -18,14 +18,14 @@ import AmenityDetails from "./AmenityDetails";
 const MultiStepForm = () => {
   const [step, setStep] = useState(1); // Current step
   const [formData, setFormData] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState("");
   const [coordinates, setCoordinates] = useState(null);
   const router = useRouter();
   // Move to Next Step
   const nextStep = async (data: FieldValues) => {
     console.log("next clicked");
     if (step == 2) {
-      setIsLoading(true);
+      setIsLoading("loading");
       const fullAddress = `${data.address},${data.city},${data.state},${data.zip},${data.country}`;
       console.log(fullAddress);
       try {
@@ -41,8 +41,8 @@ const MultiStepForm = () => {
           console.log(lat, lon);
           setCoordinates({ lat: parseFloat(lat), lon: parseFloat(lon) });
         } else {
-          alert("address not found");
-          setIsLoading(false);
+          alert("Use precise address");
+          setIsLoading("");
 
           // setStep(step);
           return;
@@ -50,12 +50,12 @@ const MultiStepForm = () => {
       } catch (error) {
         console.error("Geocoding error:", error);
         alert("Failed to fetch coordinates. Try again!");
-        setIsLoading(false);
+        setIsLoading("");
 
         return;
       }
     }
-    setIsLoading(false);
+    setIsLoading("");
     setFormData({ ...formData, ...data });
 
     console.log(data);
@@ -78,7 +78,7 @@ const MultiStepForm = () => {
   const onSubmit = async (data: FieldValues) => {
     // console.log(data);
     // upload to the supabase
-    setIsLoading(true);
+    setIsLoading("creating Your Property , Will take some time");
     const uploadedImages = await addImagesToSupabase(data.images);
 
     console.log(uploadedImages);
@@ -88,7 +88,7 @@ const MultiStepForm = () => {
     const error = await addProperty(finalData);
     if (!error) {
       toast.success("Registered Successfully");
-      setIsLoading(false);
+      setIsLoading("");
       router.replace("/");
     } else {
       console.log(error);
@@ -105,7 +105,7 @@ const MultiStepForm = () => {
       {/* Form Steps */}
       <form onSubmit={handleSubmit(step === 6 ? onSubmit : nextStep)}>
         {isLoading ? (
-          <Loader />
+          <Loader loading={isLoading} />
         ) : (
           <>
             {step === 1 && (
@@ -123,7 +123,9 @@ const MultiStepForm = () => {
                 setCoordinates={setCoordinates}
               />
             )}
-            {step === 4 && <ContactDetails register={register} />}
+            {step === 4 && (
+              <ContactDetails register={register} errors={errors} />
+            )}
             {step === 5 && (
               <AmenityDetails register={register} errors={errors} />
             )}

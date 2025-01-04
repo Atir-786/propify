@@ -18,13 +18,25 @@ const PropertyDetails = ({ register, errors, control }) => {
           Title
         </Label>
         <Input
-          {...register("title", { required: "title is req" })}
+          {...register("title", {
+            required: "title is required",
+            minLength: {
+              value: 3,
+              message: "title must be at least 3 characters long",
+            },
+            maxLength: {
+              value: 15,
+              message: "title cannot exceed 15 characters",
+            },
+          })}
           type="text"
           id="title"
           placeholder="Enter a catchy title"
           className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-green-500"
         />
-        {errors.title && <p>title is required</p>}
+        {errors.title && (
+          <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>
+        )}
       </div>
       <div className="mb-4">
         <Label
@@ -34,24 +46,52 @@ const PropertyDetails = ({ register, errors, control }) => {
           Description
         </Label>
         <Input
-          {...register("description", { required: true })}
+          {...register("description", {
+            required: true,
+            minLength: {
+              value: 10,
+              message: "description must be at least 10 characters long",
+            },
+            maxLength: {
+              value: 50,
+              message: "description cannot exceed 50 characters",
+            },
+          })}
           id="description"
           type="text"
           placeholder="Describe the property"
           className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-green-500"
         />
+        {errors.description && (
+          <p className="text-red-500 text-sm mt-1">
+            {errors.description.message}
+          </p>
+        )}
       </div>
       <div className="mb-4">
         <Label htmlFor="price" className="block font-medium text-gray-700">
           Price
         </Label>
         <Input
-          {...register("price", { required: true })}
+          {...register("price", {
+            required: true,
+            minLength: {
+              value: 3,
+              message: "price must be at least 3 characters long",
+            },
+            maxLength: {
+              value: 20,
+              message: "price cannot exceed 20 characters",
+            },
+          })}
           type="number"
           id="price"
           placeholder="Enter price in USD"
           className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-green-500"
         />
+        {errors.price && (
+          <p className="text-red-500 text-sm mt-1">{errors.price.message}</p>
+        )}
       </div>
       <div className="mb-4">
         <Label
@@ -81,7 +121,9 @@ const PropertyDetails = ({ register, errors, control }) => {
             </Select>
           )}
         />
-        {errors.propertyType && <p>PropetyType is required</p>}
+        {errors.propertyType && (
+          <p className="text-red-500 text-sm mt-1">PropetyType is required</p>
+        )}
       </div>
     </>
   );

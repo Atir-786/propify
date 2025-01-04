@@ -47,19 +47,17 @@ const AmenityDetails = ({ register, errors }) => {
 
       {/* Age of Property */}
       <div className="mb-4">
-        <Label htmlFor="built-year" className="block text-gray-700 font-medium">
+        <Label htmlFor="builtYear" className="block text-gray-700 font-medium">
           Built year
         </Label>
         <Input
-          {...register("built-year", {
-            required: "Age of property is required",
-          })}
+          {...register("builtYear")}
           type="number"
-          id="built-year"
+          id="builtYear"
           className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-green-500"
         />
-        {errors.age && (
-          <p className="text-red-500 mt-1">{errors.age.message}</p>
+        {errors.builtYear && (
+          <p className="text-red-500 mt-1">{errors.builtYear.message}</p>
         )}
       </div>
 
@@ -72,7 +70,7 @@ const AmenityDetails = ({ register, errors }) => {
           {...register("features")}
           id="features"
           placeholder="E.g., Swimming pool, garage, etc."
-          className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-green-500"
+          className="text-sm mt-2 p-2 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-green-500"
         />
       </div>
     </div>

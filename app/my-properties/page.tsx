@@ -24,7 +24,7 @@ const page = async () => {
   try {
     // Fetch properties using the converted ObjectIds
     const properties = await Property.find({ _id: { $in: owner.properties } });
-    if (!properties) throw new Error("zoko");
+    if (!properties) throw new Error("No Properties");
     return (
       <section>
         <h1 className="text-center text-3xl">My Properties</h1>

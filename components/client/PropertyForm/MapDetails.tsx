@@ -13,9 +13,11 @@ const markerIcon = new L.Icon({
 const MapDetails = ({ register, coordinates, setCoordinates }) => {
   return (
     <>
-      <h2 className="text-lg font-semibold mb-4">Step 5: Drag the location</h2>
-      <p>Lat{coordinates.lat}</p>
-      <p>Lon{coordinates.lon}</p>
+      <h2 className="text-lg font-semibold mb-4">
+        Step 5: Drag the marker to the location
+      </h2>
+      <p className="text-sm">Lat:{coordinates.lat}</p>
+      <p className="text-sm">Lon:{coordinates.lon}</p>
       {coordinates ? (
         <>
           <input
