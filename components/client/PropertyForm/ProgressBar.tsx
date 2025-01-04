@@ -3,7 +3,7 @@ import React from "react";
 const ProgressBar = ({ step }) => {
   return (
     <div className="flex items-center mb-6">
-      {[1, 2, 3, 4, 5].map((s) => (
+      {[1, 2, 3, 4, 5,6].map((s) => (
         <div
           key={s}
           className={`flex-1 h-2 rounded-lg ${

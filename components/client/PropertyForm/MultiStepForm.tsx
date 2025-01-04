@@ -13,6 +13,7 @@ import PropertyDetails from "./PropertyDetails";
 import MapDetails from "./MapDetails";
 import ProgressBar from "./ProgressBar";
 import NavigationButtons from "./NavigationButtons";
+import AmenityDetails from "./AmenityDetails";
 
 const MultiStepForm = () => {
   const [step, setStep] = useState(1); // Current step
@@ -102,7 +103,7 @@ const MultiStepForm = () => {
       {/* Progress Bar */}
       <ProgressBar step={step} />
       {/* Form Steps */}
-      <form onSubmit={handleSubmit(step === 5 ? onSubmit : nextStep)}>
+      <form onSubmit={handleSubmit(step === 6 ? onSubmit : nextStep)}>
         {isLoading ? (
           <Loader />
         ) : (
@@ -123,7 +124,10 @@ const MultiStepForm = () => {
               />
             )}
             {step === 4 && <ContactDetails register={register} />}
-            {step === 5 && <ImageDetails register={register} errors={errors} />}
+            {step === 5 && (
+              <AmenityDetails register={register} errors={errors} />
+            )}
+            {step === 6 && <ImageDetails register={register} errors={errors} />}
             {/* Navigation Buttons */}
             <NavigationButtons
               step={step}

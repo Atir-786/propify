@@ -3,7 +3,7 @@ import React from "react";
 const ImageDetails = ({ register, errors }) => {
   return (
     <>
-      <h2 className="text-lg font-semibold mb-4">Step 5: Upload Images</h2>
+      <h2 className="text-lg font-semibold mb-4">Step 6: Upload Images</h2>
       <div className="mb-4">
         <label htmlFor="images" className="block font-medium text-gray-700">
           Upload Property Pictures (Min: 3)

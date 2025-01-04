@@ -13,7 +13,7 @@ const NavigationButtons = ({ step, prevStep, nextStep, handleSubmit }) => {
           Back
         </Button>
       )}
-      {step < 5 && (
+      {step < 6 && (
         <Button
           type="button"
           onClick={handleSubmit(nextStep)}
@@ -22,7 +22,7 @@ const NavigationButtons = ({ step, prevStep, nextStep, handleSubmit }) => {
           Next
         </Button>
       )}
-      {step === 5 && (
+      {step === 6 && (
         <Button
           type="submit"
           className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
