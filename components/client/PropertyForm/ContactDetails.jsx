@@ -20,7 +20,7 @@ const ContactDetails = ({ register, errors }) => {
               message: "Name must be at least 3 characters long",
             },
             maxLength: {
-              value: 20,
+              value: 30,
               message: "Name cannot exceed 20 characters",
             },
           })}

@@ -24,10 +24,6 @@ const PropertyDetails = ({ register, errors, control }) => {
               value: 3,
               message: "title must be at least 3 characters long",
             },
-            maxLength: {
-              value: 15,
-              message: "title cannot exceed 15 characters",
-            },
           })}
           type="text"
           id="title"
@@ -51,10 +47,6 @@ const PropertyDetails = ({ register, errors, control }) => {
             minLength: {
               value: 10,
               message: "description must be at least 10 characters long",
-            },
-            maxLength: {
-              value: 50,
-              message: "description cannot exceed 50 characters",
             },
           })}
           id="description"
