@@ -93,7 +93,7 @@ const PropertyDetails = ({ register, errors, control }) => {
           <p className="text-red-500 text-sm mt-1">{errors.price.message}</p>
         )}
       </div>
-      <div className="mb-4">
+      {/* <div className="mb-4">
         <Label
           htmlFor="propertyType"
           className="block font-medium text-gray-700"
@@ -124,7 +124,7 @@ const PropertyDetails = ({ register, errors, control }) => {
         {errors.propertyType && (
           <p className="text-red-500 text-sm mt-1">PropetyType is required</p>
         )}
-      </div>
+      </div> */}
     </>
   );
 };

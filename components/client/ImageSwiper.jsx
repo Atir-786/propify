@@ -14,7 +14,7 @@ import "swiper/css/bundle";
 import Image from "next/image";
 const ImageSwiper = ({ images }) => {
   return (
-    <div className="w-full max-w-4xl bg-white rounded-lg shadow-md">
+    <div className="w-full bg-white rounded-lg shadow-md">
       {/* <div className="w-full max-w-4xl mx-auto bg-white rounded-lg shadow-md"> */}
       <Swiper
         modules={[Navigation, Keyboard, Pagination, A11y]}

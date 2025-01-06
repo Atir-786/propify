@@ -14,10 +14,7 @@ const propertySchema = new mongoose.Schema({
     type: Number,
     required: [true, "Property price is required"],
   },
-  propertyType: {
-    type: String,
-    required: [true, "Property Type is required"],
-  },
+
   address: {
     type: String,
     required: [true, "Property address is required"],
@@ -67,7 +64,40 @@ const propertySchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  propertyType: {
+    type: String,
+    required: [true, "Property Type is required"],
+  },
+  landSize: {
+    type: Number,
 
+    required: [true, "land size is required"],
+  },
+  houseSize: {
+    type: Number,
+  },
+  bedrooms: {
+    type: Number,
+  },
+  bathrooms: {
+    type: Number,
+  },
+  furnished: {
+    type: String,
+  },
+  amenities: {
+    type: [String],
+    default: [],
+  },
+  builtYear: {
+    type: Number,
+  },
+  parking: {
+    type: String,
+  },
+  features: {
+    type: String,
+  },
   images: {
     type: [String],
     required: [true, "Property image is required"],

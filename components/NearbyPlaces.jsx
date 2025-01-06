@@ -1,7 +1,7 @@
 import React from "react";
 import { FaHospital, FaSchool } from "react-icons/fa";
 async function fetchNearbyPlaces(lat, lng) {
-  const radius = 2000; // 2 km
+  const radius = 4000; // 2 km
   const maxResults = 5;
   const url = `https://overpass-api.de/api/interpreter?data=[out:json];(node(around:${radius},${lat},${lng})["amenity"="hospital"];node(around:${radius},${lat},${lng})["amenity"="school"];);out ${maxResults};`;
 
