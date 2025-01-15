@@ -3,8 +3,9 @@ import { Property } from "@/models/Property";
 import { ObjectId } from "mongodb";
 import ImageSwiper from "@/components/client/ImageSwiper";
 import LeafletMap from "@/components/client/LeafletMap";
+import { auth } from "@/auth";
+import DeletePropertyButton from "@/components/DeletePropertyButton";
 import dynamic from "next/dynamic";
-// import NearbyPlaces from "@/components/NearbyPlaces";
 const NearbyPlaces = dynamic(() => import("@/components/NearbyPlaces"), {
   loading: () => <p>Loading Nearby Places</p>,
 });
@@ -24,14 +25,21 @@ import {
   FaRulerCombined,
   FaUser,
 } from "react-icons/fa";
+
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const session = await auth();
+  const user = session?.user;
+  const userId = user.id;
+  console.log(userId);
   const { id } = await params;
-  // console.log(params);
+  console.log(typeof id);
   await connectDB();
   try {
     console.log("finding");
     const property = await Property.findOne({ _id: new ObjectId(id) });
+    // console.log(property);
     const {
+      _id,
       title,
       description,
       price,
@@ -54,7 +62,11 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
       landSize,
       houseSize,
       parkingArea,
+      ownerId,
     } = property;
+    const owner = String(ownerId);
+    // console.log("propertyid", _id, typeof _id);
+    // console.log(String(ownerId) === userId);
     return (
       <div className="max-w-4xl mx-auto p-6">
         <ImageSwiper images={images} />
@@ -204,6 +216,12 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
             </p>
           </div>
         </div>
+        {ownerId == userId && (
+          <>
+            {/* <h1>Hello</h1> */}
+            <DeletePropertyButton id={id} ownerId={owner} />
+          </>
+        )}
       </div>
     );
   } catch (error) {

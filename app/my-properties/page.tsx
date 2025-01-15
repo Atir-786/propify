@@ -12,25 +12,24 @@ const page = async () => {
   if (!user) {
     redirect("/");
   }
-  // console.log(user);
-  // console.log("yekla");
+
   const { email } = user;
   await connectDB();
   const owner = await User.findOne({ email });
+  console.log(owner);
 
-  // const propertyIds = owner.properties.map(
-  //   (id: string) => new mongoose.Types.ObjectId(id)
-  // );
   try {
     // Fetch properties using the converted ObjectIds
+    console.log("fetching");
     const properties = await Property.find({ _id: { $in: owner.properties } });
+    console.log(properties);
     if (!properties) throw new Error("No Properties");
     return (
       <section>
         <h1 className="text-center text-3xl">My Properties</h1>
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
           {properties.map((property) => (
-            <PropertyCard key={property.location} property={property} />
+            <PropertyCard key={property._id} property={property}></PropertyCard>
           ))}
         </ul>
       </section>
