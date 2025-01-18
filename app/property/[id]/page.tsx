@@ -29,7 +29,7 @@ import {
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const session = await auth();
   const user = session?.user;
-  const userId = user.id;
+  const userId = user?.id;
   console.log(userId);
   const { id } = await params;
   console.log(typeof id);
