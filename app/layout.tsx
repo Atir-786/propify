@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "../components/auth/Navbar";
 import { Toaster } from "sonner";
+import Head from "next/head";
 const workSans = localFont({
   src: [
     {

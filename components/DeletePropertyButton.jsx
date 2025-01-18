@@ -6,6 +6,7 @@ import connectDB from "@/lib/db";
 // import { ObjectId } from "mongodb";
 import { deleteProperty } from "@/action/property";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 export default function DeletePropertyButton({ id, ownerId }) {
   const router = useRouter();
 

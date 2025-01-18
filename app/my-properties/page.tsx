@@ -36,7 +36,7 @@ const page = async () => {
     );
   } catch (error) {
     console.log("err", error);
-    return <h1>Error loading properties</h1>;
+    return <h1>No properties</h1>;
   }
 };
 

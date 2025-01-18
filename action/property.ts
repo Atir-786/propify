@@ -34,7 +34,6 @@ const addProperty = async (formDetails) => {
 const deleteProperty = async (propId) => {
   try {
     const session = await auth();
-    const { email } = session.user;
     const { id } = session.user;
     await connectDB();
     const property = await Property.findOneAndDelete({
@@ -42,7 +41,7 @@ const deleteProperty = async (propId) => {
     });
     await User.updateOne(
       { _id: new ObjectId(id) },
-      { $pull: { properties: propId } }
+      { $pull: { properties: new ObjectId(propId) } }
     );
     // console.log("deleting your property");
 
