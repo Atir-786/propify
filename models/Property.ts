@@ -71,15 +71,33 @@ const propertySchema = new mongoose.Schema({
   landSize: {
     type: Number,
 
-    required: [true, "land size is required"],
+    // required: [true, "land size is required"],
   },
-  houseSize: {
+  totalHouseArea: {
+    type: Number,
+  },
+  lotArea: {
+    type: Number,
+  },
+  livingArea: {
+    type: Number,
+  },
+  livingAreaRenovated: {
     type: Number,
   },
   bedrooms: {
     type: Number,
   },
   bathrooms: {
+    type: Number,
+  },
+  floors: {
+    type: Number,
+  },
+  builtYear: {
+    type: Number,
+  },
+  houseGrade: {
     type: Number,
   },
   furnished: {
@@ -89,9 +107,7 @@ const propertySchema = new mongoose.Schema({
     type: [String],
     default: [],
   },
-  builtYear: {
-    type: Number,
-  },
+
   parking: {
     type: String,
   },

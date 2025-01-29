@@ -9,11 +9,13 @@ import dynamic from "next/dynamic";
 const NearbyPlaces = dynamic(() => import("@/components/NearbyPlaces"), {
   loading: () => <p>Loading Nearby Places</p>,
 });
+import AIPrice from "@/components/AIPrice";
 import {
   FaAlignLeft,
   FaBath,
   FaBed,
   FaBuilding,
+  FaCalendar,
   FaCouch,
   FaDollarSign,
   FaEnvelope,
@@ -37,7 +39,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   try {
     console.log("finding");
     const property = await Property.findOne({ _id: new ObjectId(id) });
-    // console.log(property);
+    console.log(property);
     const {
       _id,
       title,
@@ -60,8 +62,14 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
       bedrooms,
       bathrooms,
       landSize,
-      houseSize,
-      parkingArea,
+      totalHouseArea,
+      lotArea,
+      livingArea,
+      livingAreaRenovated,
+      floors,
+      houseGrade,
+      builtYear,
+      parking,
       ownerId,
     } = property;
     const owner = String(ownerId);
@@ -103,21 +111,69 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
                 <FaBath className="text-purple-500" />
                 <span className="font-medium">{bathrooms} Baths</span>
               </div>
-              <div className="flex items-center gap-2 text-gray-700">
-                <FaRulerCombined className="text-orange-500" />
-                <span className="font-medium">{landSize} sq. ft. Land</span>
-              </div>
-              {houseSize && (
+              {landSize && (
                 <div className="flex items-center gap-2 text-gray-700">
-                  <FaBuilding className="text-teal-500" />
-                  <span className="font-medium">{houseSize} sq. ft. House</span>
+                  <FaRulerCombined className="text-orange-500" />
+                  <span className="font-medium">{landSize} sq. ft. Land</span>
                 </div>
               )}
-              {parkingArea && (
+              {totalHouseArea && (
+                <div className="flex items-center gap-2 text-gray-700">
+                  <FaBuilding className="text-teal-500" />
+                  <span className="font-medium">
+                    {totalHouseArea} sq. ft. Total House Area
+                  </span>
+                </div>
+              )}{" "}
+              {lotArea && (
+                <div className="flex items-center gap-2 text-gray-700">
+                  <FaBuilding className="text-teal-500" />
+                  <span className="font-medium">
+                    {lotArea} sq. ft. Lot Area
+                  </span>
+                </div>
+              )}{" "}
+              {livingArea && (
+                <div className="flex items-center gap-2 text-gray-700">
+                  <FaBuilding className="text-teal-500" />
+                  <span className="font-medium">
+                    {livingArea} sq. ft. Living Area
+                  </span>
+                </div>
+              )}
+              {livingAreaRenovated && (
+                <div className="flex items-center gap-2 text-gray-700">
+                  <FaBuilding className="text-teal-500" />
+                  <span className="font-medium">
+                    {livingAreaRenovated} sq. ft. Living Area Renovated
+                  </span>
+                </div>
+              )}{" "}
+              {builtYear && (
+                <div className="flex items-center gap-2 text-gray-700">
+                  <FaCalendar className="text-teal-500" />
+                  <span className="font-medium">Built Year {builtYear}</span>
+                </div>
+              )}{" "}
+              {houseGrade && (
+                <div className="flex items-center gap-2 text-gray-700">
+                  <FaBuilding className="text-teal-500" />
+                  <span className="font-medium">
+                    Grade of House : {houseGrade}
+                  </span>
+                </div>
+              )}
+              {floors && (
+                <div className="flex items-center gap-2 text-gray-700">
+                  <FaBuilding className="text-teal-500" />
+                  <span className="font-medium">No of Floors : {floors}</span>
+                </div>
+              )}
+              {parking && (
                 <div className="flex items-center gap-2 text-gray-700">
                   <FaParking className="text-gray-500" />
                   <span className="font-medium">
-                    {parkingArea} sq. ft. Parking
+                    Parking Available : {parking}
                   </span>
                 </div>
               )}
@@ -171,6 +227,16 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
                 </p>
               </div>
             )}
+          </div>
+          {/* Ai Price Predictor */}
+          <div className="bg-gray-50 shadow-md rounded-lg p-6 mt-6 max-w-4xl mx-auto border border-gray-200">
+            <div className="mb-6">
+              <h3 className="text-xl font-semibold text-gray-700 flex items-center gap-2 mb-3">
+                <FaAlignLeft className="text-green-500" /> Price Prediction By
+                AI
+              </h3>
+              <AIPrice />
+            </div>
           </div>
           {/* Property Location */}
           <div className="mt-6">
