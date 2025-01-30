@@ -118,6 +118,14 @@ const propertySchema = new mongoose.Schema({
     type: [String],
     required: [true, "Property image is required"],
   },
+  virtualImages: {
+    type: [String],
+    // required: [true, "Property image is required"],
+  },
+  status: {
+    type: String,
+    default: "Active",
+  },
 });
 export const Property =
   mongoose.models?.Property || mongoose.model("Property", propertySchema);

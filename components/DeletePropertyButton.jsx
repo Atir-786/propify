@@ -28,7 +28,10 @@ export default function DeletePropertyButton({ id, ownerId }) {
     }
   }
   return (
-    <Button className="w-full mt-2" onClick={() => handleDeleteProperty()}>
+    <Button
+      className="w-full mt-2 bg-red-500"
+      onClick={() => handleDeleteProperty()}
+    >
       Delelte Property
     </Button>
   );

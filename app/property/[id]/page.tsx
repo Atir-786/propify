@@ -5,6 +5,7 @@ import ImageSwiper from "@/components/client/ImageSwiper";
 import LeafletMap from "@/components/client/LeafletMap";
 import { auth } from "@/auth";
 import DeletePropertyButton from "@/components/DeletePropertyButton";
+import SoldPropertyButton from "@/components/SoldPropertyButton";
 import dynamic from "next/dynamic";
 const NearbyPlaces = dynamic(() => import("@/components/NearbyPlaces"), {
   loading: () => <p>Loading Nearby Places</p>,
@@ -26,7 +27,9 @@ import {
   FaPhoneAlt,
   FaRulerCombined,
   FaUser,
+  FaVrCardboard,
 } from "react-icons/fa";
+import Link from "next/link";
 
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const session = await auth();
@@ -71,6 +74,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
       builtYear,
       parking,
       ownerId,
+      virtualImages,
     } = property;
     const owner = String(ownerId);
     // console.log("propertyid", _id, typeof _id);
@@ -205,6 +209,26 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
               </p>
             </div>
           </div>
+          {/* virtual tour */}
+
+          {virtualImages.length > 0 && (
+            <div className="bg-gray-50 shadow-md rounded-lg p-6 mt-6 max-w-4xl mx-auto border border-gray-200">
+              <div className="mb-6">
+                <h3 className="text-xl font-semibold text-gray-700 flex items-center gap-2 mb-3">
+                  <FaVrCardboard className="text-green-500" /> Virtual Tour
+                </h3>
+
+                <div className="mb-4">
+                  <Link
+                    href={`/property/${id}/virtual-tour`}
+                    className="bg-red-500 p-2 rounded"
+                  >
+                    Click ME
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )}
           <div className="bg-gray-50 shadow-md rounded-lg p-6 mt-6 max-w-4xl mx-auto border border-gray-200">
             {/* Property Description Section */}
             <div className="mb-6">
@@ -284,7 +308,8 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
         </div>
         {ownerId == userId && (
           <>
-            {/* <h1>Hello</h1> */}
+            <SoldPropertyButton id={id} ownerId={owner} />
+
             <DeletePropertyButton id={id} ownerId={owner} />
           </>
         )}

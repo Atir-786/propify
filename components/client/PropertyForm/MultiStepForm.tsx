@@ -14,7 +14,7 @@ import MapDetails from "./MapDetails";
 import ProgressBar from "./ProgressBar";
 import NavigationButtons from "./NavigationButtons";
 import AmenityDetails from "./AmenityDetails";
-
+import Add360DegImages from "./Add360DegImages";
 const MultiStepForm = () => {
   const [step, setStep] = useState(1); // Current step
   const [formData, setFormData] = useState({});
@@ -80,9 +80,15 @@ const MultiStepForm = () => {
     // upload to the supabase
     setIsLoading("creating Your Property , Will take some time");
     const uploadedImages = await addImagesToSupabase(data.images);
-
+    const uploaded360Images = data.virtualImages
+      ? await addImagesToSupabase(data.virtualImages)
+      : [];
     console.log(uploadedImages);
-    const finalData = { ...formData, images: uploadedImages };
+    const finalData = {
+      ...formData,
+      images: uploadedImages,
+      virtualImages: uploaded360Images.length > 0 ? uploaded360Images : null,
+    };
     console.log(finalData);
     // Add property to supabase
     const error = await addProperty(finalData);
@@ -103,7 +109,7 @@ const MultiStepForm = () => {
       {/* Progress Bar */}
       <ProgressBar step={step} />
       {/* Form Steps */}
-      <form onSubmit={handleSubmit(step === 6 ? onSubmit : nextStep)}>
+      <form onSubmit={handleSubmit(step === 7 ? onSubmit : nextStep)}>
         {isLoading ? (
           <Loader loading={isLoading} />
         ) : (
@@ -130,6 +136,9 @@ const MultiStepForm = () => {
               <AmenityDetails register={register} errors={errors} />
             )}
             {step === 6 && <ImageDetails register={register} errors={errors} />}
+            {step === 7 && (
+              <Add360DegImages register={register} errors={errors} />
+            )}
             {/* Navigation Buttons */}
             <NavigationButtons
               step={step}

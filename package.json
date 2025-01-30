@@ -28,6 +28,7 @@
     "clsx": "^2.1.1",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.456.0",
+    "marzipano": "^0.10.2",
     "mongoose": "^8.8.1",
     "next": "15.0.3",
     "next-auth": "^5.0.0-beta.25",
