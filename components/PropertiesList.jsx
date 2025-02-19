@@ -64,8 +64,10 @@ const PropertiesList = async () => {
 
       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
         {properties.length > 0 ? (
-          properties.map((property) => (
-            <PropertyCard key={property._id} property={property} />
+          properties.map((property, index) => (
+            <li key={index}>
+              <PropertyCard property={property} />
+            </li>
           ))
         ) : isNumberQuery ? null : (
           <p className="text-center text-gray-500 col-span-full">

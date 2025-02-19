@@ -25,11 +25,13 @@ const page = async () => {
       {pendingProperties.length === 0 ? (
         <p className="text-gray-500">No pending properties.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {pendingProperties.map((property) => (
-            <PropertyCard key={property._id} property={property} />
+        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {pendingProperties.map((property, index) => (
+            <li key={index}>
+              <PropertyCard property={property} />
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );

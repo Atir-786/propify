@@ -4,7 +4,6 @@ import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import connectDB from "./lib/db";
 import { User } from "@/models/User";
-import { trusted } from "mongoose";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     GitHub({
@@ -60,7 +59,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.id = user.id;
         token.role = user.role;
-        // Assuming `id` is part of the user object
+        // Assuming id is part of the user object
       }
       return token;
     },
@@ -68,7 +67,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // Pass user ID to the session
       if (token?.id) {
         session.user.id = token.id as string;
-        session.user.role = token.role;
+        session.user.role = token.role as string;
       }
       return session;
     },
@@ -87,7 +86,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             console.log(firstName, lastName, email);
             await User.create({ firstName, lastName, email, role: "user" });
           }
-          // Attach MongoDB `_id` to the `user` object
+          // Attach MongoDB _id to the user object
           user.id = alreadyUser._id.toString(); // Ensure the ID is a string
           return true;
         } catch (error) {

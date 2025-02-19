@@ -3,14 +3,14 @@ import { useState } from "react";
 import Link from "next/link";
 import { FiMenu, FiX } from "react-icons/fi";
 import { signOutUser } from "@/action/user";
-import { User } from "next-auth"; // Import User type
+// import { User } from "next-auth"; // Import User type
 
 // Define Navbar Props Type
-interface NavbarProps {
-  user?: User | null;
-}
+// interface NavbarProps {
+//   user?: User | null;
+// }
 
-export default function Navbar({ user }: NavbarProps) {
+export default function Navbar({ user }) {
   const [menuOpen, setMenuOpen] = useState(false);
   // console.log(user);
   const toggleMenu = () => setMenuOpen(!menuOpen);

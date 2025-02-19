@@ -2,7 +2,6 @@
 import connectDB from "@/lib/db";
 import { User } from "@/models/User";
 import { CredentialsSignin } from "next-auth";
-import { redirect } from "next/navigation";
 import { signIn, signOut } from "@/auth";
 const login = async (email: string, password: string) => {
   // "use server";
