@@ -52,10 +52,18 @@ function NavbarClient({ user, signOut }) {
 
       {/* Navigation Links */}
       <ul
-        className={`absolute md:relative top-[61px] left-0 w-full md:w-auto md:top-0 md:left-0 bg-gray-900 md:bg-transparent text-center md:flex md:items-center md:space-x-6 ${
+        className={`z-999 absolute md:relative top-[61px] left-0 w-full md:w-auto md:top-0 md:left-0 bg-gray-900 md:bg-transparent text-center md:flex md:items-center md:space-x-6 ${
           isOpen ? "block" : "hidden"
         }`}
       >
+        <li className="border-b md:border-none border-gray-700">
+          <Link
+            href={user ? "/dashboard" : "/login"}
+            className="block md:inline-block hover:text-gray-300 transition duration-300 py-2 md:py-0"
+          >
+            Dashboard
+          </Link>
+        </li>
         <li className="border-b md:border-none border-gray-700">
           <Link
             href={user ? "/sell" : "/login"}
@@ -100,20 +108,6 @@ function NavbarClient({ user, signOut }) {
             >
               Logout
             </button>
-            {/* <form
-              action={async () => {
-                "use server";
-                await signOut();
-              }}
-              className="block md:inline-block"
-            >
-              <button
-                type="submit"
-                className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded transition duration-300"
-              >
-                Logout
-              </button>
-            </form> */}
           </li>
         )}
       </ul>

@@ -1,15 +1,25 @@
 import connectDB from "@/lib/db";
 import { Property } from "@/models/Property";
 import { ObjectId } from "mongodb";
-import ImageSwiper from "@/components/client/ImageSwiper";
-import LeafletMap from "@/components/client/LeafletMap";
+// import ImageSwiper from "@/components/client/ImageSwiper";
+// import LeafletMap from "@/components/client/LeafletMap";
 import { auth } from "@/auth";
 import DeletePropertyButton from "@/components/DeletePropertyButton";
 import SoldPropertyButton from "@/components/SoldPropertyButton";
 import dynamic from "next/dynamic";
+import PropertyActionButton from "@/components/PropertyActionButton";
 const NearbyPlaces = dynamic(() => import("@/components/NearbyPlaces"), {
   loading: () => <p>Loading Nearby Places</p>,
 });
+const ImageSwiper = dynamic(() => import("@/components/client/ImageSwiper"), {
+  loading: () => <p>Loading Images</p>,
+});
+const LeafletContainer = dynamic(
+  () => import("@/components/LeafletContainer"),
+  {
+    loading: () => <p>Loading Leaflet</p>,
+  }
+);
 import AIPrice from "@/components/AIPrice";
 import {
   FaAlignLeft,
@@ -34,6 +44,7 @@ import Link from "next/link";
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const session = await auth();
   const user = session?.user;
+  console.log(user);
   const userId = user?.id;
   console.log(userId);
   const { id } = await params;
@@ -41,7 +52,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   await connectDB();
   try {
     console.log("finding");
-    const property = await Property.findOne({ _id: new ObjectId(id) });
+    const property = await Property.findById(id);
     console.log(property);
     const {
       _id,
@@ -75,242 +86,86 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
       parking,
       ownerId,
       virtualImages,
+      status,
     } = property;
     const owner = String(ownerId);
     // console.log("propertyid", _id, typeof _id);
     // console.log(String(ownerId) === userId);
     return (
-      <div className="max-w-4xl mx-auto p-6">
+      <div className="max-w-6xl mx-auto p-6 space-y-6 bg-gray-50">
         <ImageSwiper images={images} />
-        <div className="mt-6">
-          {/* Property Details */}
-          <div className="bg-white shadow-md rounded-lg p-6 max-w-4xl mx-auto border border-gray-200">
-            {/* Property Name & Price */}
-            <div className="mb-4 flex justify-between items-center">
-              <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-                <FaHome className="text-green-500" /> {title}
-              </h2>
-              <p className="text-xl font-semibold text-green-700 flex items-center gap-2">
-                <FaDollarSign className="text-green-500" /> $
-                {price.toLocaleString()}
-              </p>
-            </div>
-
-            {/* Address Section */}
-            <div className="mb-4">
-              <h3 className="text-lg font-semibold text-gray-700 mb-1 flex items-center gap-2">
-                <FaMapMarkerAlt className="text-red-500" /> Address
-              </h3>
-              <p className="text-gray-600">
-                {address}, {city}, {state}, {country}, {zip}
-              </p>
-            </div>
-            {/* Key Property Details */}
-            <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div className="flex items-center gap-2 text-gray-700">
-                <FaBed className="text-blue-500" />
-                <span className="font-medium">{bedrooms} Beds</span>
-              </div>
-              <div className="flex items-center gap-2 text-gray-700">
-                <FaBath className="text-purple-500" />
-                <span className="font-medium">{bathrooms} Baths</span>
-              </div>
-              {landSize && (
-                <div className="flex items-center gap-2 text-gray-700">
-                  <FaRulerCombined className="text-orange-500" />
-                  <span className="font-medium">{landSize} sq. ft. Land</span>
-                </div>
-              )}
-              {totalHouseArea && (
-                <div className="flex items-center gap-2 text-gray-700">
-                  <FaBuilding className="text-teal-500" />
-                  <span className="font-medium">
-                    {totalHouseArea} sq. ft. Total House Area
-                  </span>
-                </div>
-              )}{" "}
-              {lotArea && (
-                <div className="flex items-center gap-2 text-gray-700">
-                  <FaBuilding className="text-teal-500" />
-                  <span className="font-medium">
-                    {lotArea} sq. ft. Lot Area
-                  </span>
-                </div>
-              )}{" "}
-              {livingArea && (
-                <div className="flex items-center gap-2 text-gray-700">
-                  <FaBuilding className="text-teal-500" />
-                  <span className="font-medium">
-                    {livingArea} sq. ft. Living Area
-                  </span>
-                </div>
-              )}
-              {livingAreaRenovated && (
-                <div className="flex items-center gap-2 text-gray-700">
-                  <FaBuilding className="text-teal-500" />
-                  <span className="font-medium">
-                    {livingAreaRenovated} sq. ft. Living Area Renovated
-                  </span>
-                </div>
-              )}{" "}
-              {builtYear && (
-                <div className="flex items-center gap-2 text-gray-700">
-                  <FaCalendar className="text-teal-500" />
-                  <span className="font-medium">Built Year {builtYear}</span>
-                </div>
-              )}{" "}
-              {houseGrade && (
-                <div className="flex items-center gap-2 text-gray-700">
-                  <FaBuilding className="text-teal-500" />
-                  <span className="font-medium">
-                    Grade of House : {houseGrade}
-                  </span>
-                </div>
-              )}
-              {floors && (
-                <div className="flex items-center gap-2 text-gray-700">
-                  <FaBuilding className="text-teal-500" />
-                  <span className="font-medium">No of Floors : {floors}</span>
-                </div>
-              )}
-              {parking && (
-                <div className="flex items-center gap-2 text-gray-700">
-                  <FaParking className="text-gray-500" />
-                  <span className="font-medium">
-                    Parking Available : {parking}
-                  </span>
-                </div>
-              )}
-            </div>
-            {/* Amenities Section */}
-            <div className="mb-4">
-              <h3 className="text-lg font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                <FaCouch className="text-purple-500" /> Amenities
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {amenities.map((amenity, index) => (
-                  <span
-                    key={index}
-                    className="bg-gray-100 text-gray-800 text-sm font-medium px-3 py-1 rounded-full shadow-md"
-                  >
-                    {amenity}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Property Type */}
-            <div className="mt-4">
-              <p className="text-gray-700">
-                <span className="font-semibold text-gray-900">
-                  Property Type:
-                  {propertyType}
-                </span>
-              </p>
-            </div>
-          </div>
-          {/* virtual tour */}
-
-          {virtualImages.length > 0 && (
-            <div className="bg-gray-50 shadow-md rounded-lg p-6 mt-6 max-w-4xl mx-auto border border-gray-200">
-              <div className="mb-6">
-                <h3 className="text-xl font-semibold text-gray-700 flex items-center gap-2 mb-3">
-                  <FaVrCardboard className="text-green-500" /> Virtual Tour
-                </h3>
-
-                <div className="mb-4">
-                  <Link
-                    href={`/property/${id}/virtual-tour`}
-                    className="bg-red-500 p-2 rounded"
-                  >
-                    Click ME
-                  </Link>
-                </div>
-              </div>
-            </div>
-          )}
-          <div className="bg-gray-50 shadow-md rounded-lg p-6 mt-6 max-w-4xl mx-auto border border-gray-200">
-            {/* Property Description Section */}
-            <div className="mb-6">
-              <h3 className="text-xl font-semibold text-gray-700 flex items-center gap-2 mb-3">
-                <FaAlignLeft className="text-green-500" /> Property Description
-              </h3>
-              <p className="text-gray-600 text-base leading-relaxed">
-                {description || "No description provided by the seller."}
-              </p>
-            </div>
-
-            {/* Additional Features Section */}
-            {features && (
-              <div>
-                <h3 className="text-xl font-semibold text-gray-700 flex items-center gap-2 mb-3">
-                  <FaListAlt className="text-blue-500" /> Other Features
-                </h3>
-                <p className="text-gray-600 text-base leading-relaxed">
-                  {features || "No additional features provided."}
-                </p>
-              </div>
-            )}
-          </div>
-          {/* Ai Price Predictor */}
-          <div className="bg-gray-50 shadow-md rounded-lg p-6 mt-6 max-w-4xl mx-auto border border-gray-200">
-            <div className="mb-6">
-              <h3 className="text-xl font-semibold text-gray-700 flex items-center gap-2 mb-3">
-                <FaAlignLeft className="text-green-500" /> Price Prediction By
-                AI
-              </h3>
-              <AIPrice />
-            </div>
-          </div>
-          {/* Property Location */}
-          <div className="mt-6">
-            <h2 className="text-2xl font-semibold text-gray-700 mb-4">
-              Property Location
-            </h2>
-            <div className="w-full h-80">
-              <LeafletMap lat={lat} lng={lng} title={title} />
-            </div>
-          </div>
-          {/* {Nearby places} */}
-          <NearbyPlaces lat={lat} lng={lng} />
-          {/* Seller Details */}
-          <div className="bg-white shadow-lg rounded-lg p-6 max-w-md mx-auto border border-gray-200">
-            {/* Seller Info Header */}
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b-2 border-gray-200 pb-2 flex items-center gap-2">
-              <FaUser className="text-green-500" /> Seller Information
-            </h2>
-
-            {/* Seller Name */}
-            <p className="text-gray-700 mb-3">
-              <span className="font-medium text-gray-900">Name:</span>
-              <span className="font-semibold ml-2">{name}</span>
-            </p>
-
-            {/* Seller Email */}
-            <p className="text-gray-700 mb-3">
-              <span className="font-medium text-gray-900">Email:</span>
-              <a
-                href={`mailto:${email}`}
-                className="text-blue-600 font-semibold hover:underline ml-2 flex items-center gap-1"
-              >
-                <FaEnvelope className="text-blue-600" /> {email}
-              </a>
-            </p>
-
-            {/* Seller Phone */}
-            <p className="text-gray-700">
-              <span className="font-medium text-gray-900">Contact:</span>
-              <span className="font-semibold ml-2 flex items-center gap-1">
-                <FaPhoneAlt className="text-gray-600" /> {phone}
-              </span>
-            </p>
-          </div>
-        </div>
-        {ownerId == userId && (
+        <PropertyInfo
+          title={title}
+          price={price}
+          status={status}
+          address={{ address, city, state, country, zip }}
+        />
+        <KeyDetails
+          {...{
+            bedrooms,
+            bathrooms,
+            landSize,
+            totalHouseArea,
+            lotArea,
+            livingArea,
+            livingAreaRenovated,
+            builtYear,
+            houseGrade,
+            floors,
+            parking,
+          }}
+        />
+        <Amenities amenities={amenities} />
+        <PropertyDescription description={description} features={features} />
+        {virtualImages.length > 0 && <VirtualTour propertyId={_id} />}
+        <AIPricePrediction id={id} />
+        <PropertyLocation lat={lat} lng={lng} title={title} />
+        <NearbyPlaces lat={lat} lng={lng} />
+        <SellerInfo name={name} email={email} phone={phone} />
+        {String(ownerId) === userId && (
           <>
-            <SoldPropertyButton id={id} ownerId={owner} />
+            <div className="flex gap-4 justify-end">
+              <>
+                {(status === "reserved" || status === "active") && (
+                  <PropertyActionButton
+                    id={id}
+                    ownerId={String(ownerId)}
+                    action="markAsSold"
+                    label="Mark as Sold"
+                    className="bg-orange-400"
+                  />
+                )}
+                {(status === "sold" || status === "active") && (
+                  <PropertyActionButton
+                    id={id}
+                    ownerId={String(ownerId)}
+                    action="markAsReserved"
+                    label="Mark as Reserved"
+                    className="bg-yellow-500"
+                  />
+                )}
+                {(status === "sold" || status === "reserved") && (
+                  <PropertyActionButton
+                    id={id}
+                    ownerId={String(ownerId)}
+                    action="markAsActive"
+                    label="Mark as Active"
+                    className="bg-green-500"
+                  />
+                )}
+              </>
 
-            <DeletePropertyButton id={id} ownerId={owner} />
+              <DeletePropertyButton id={id} ownerId={String(ownerId)} />
+            </div>
+            {user?.role === "admin" && status === "pending" && (
+              <PropertyActionButton
+                id={id}
+                ownerId={String(ownerId)}
+                action="markAsActive"
+                label="Mark as Active"
+                className="bg-blue-500"
+              />
+            )}
           </>
         )}
       </div>
@@ -325,5 +180,115 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
     );
   }
 };
+const PropertyInfo = ({ status, title, price, address }) => (
+  <div className="bg-white shadow-xl rounded-xl p-6 border border-gray-200 flex flex-col gap-2">
+    <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+      <FaHome className="text-green-500" /> {title}
+    </h2>
+    <h1>{status}</h1>
+    <p className="text-xl font-semibold text-green-700 flex items-center gap-2">
+      <FaDollarSign className="text-green-500" /> ${price.toLocaleString()}
+    </p>
+    <p className="text-gray-600 flex items-center gap-2">
+      <FaMapMarkerAlt className="text-red-500" /> {address.address},{" "}
+      {address.city}, {address.state}, {address.country}, {address.zip}
+    </p>
+  </div>
+);
+
+const KeyDetails = (props) => (
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-6 bg-white shadow-xl rounded-xl p-6 border border-gray-200">
+    {Object.entries(props).map(([key, value]) =>
+      value !== undefined && value !== null ? (
+        <div key={key} className="flex flex-col items-center text-gray-700">
+          <FaBuilding className="text-teal-500 text-2xl" />
+          <span className="font-medium text-center mt-2">
+            {key.replace(/([A-Z])/g, " $1")}: {String(value)}
+          </span>
+        </div>
+      ) : null
+    )}
+  </div>
+);
+
+const Amenities = ({ amenities }) => (
+  <div className="bg-white shadow-xl rounded-xl p-6 border border-gray-200">
+    <h3 className="text-lg font-semibold text-gray-700 flex items-center gap-2 mb-3">
+      <FaCouch className="text-purple-500" /> Amenities
+    </h3>
+    <div className="flex flex-wrap gap-3">
+      {amenities.map((amenity, index) => (
+        <span
+          key={index}
+          className="bg-gray-100 text-gray-800 text-sm font-medium px-4 py-2 rounded-lg shadow-md"
+        >
+          {amenity}
+        </span>
+      ))}
+    </div>
+  </div>
+);
+
+const PropertyDescription = ({ description, features }) => (
+  <div className="bg-white shadow-xl rounded-xl p-6 border border-gray-200">
+    <h3 className="text-xl font-semibold text-gray-700 flex items-center gap-2 mb-3">
+      <FaAlignLeft className="text-green-500" /> Property Description
+    </h3>
+    <p className="text-gray-600">{description || "No description provided."}</p>
+    {features && (
+      <div className="mt-4">
+        <h3 className="text-xl font-semibold text-gray-700 flex items-center gap-2 mb-3">
+          <FaListAlt className="text-blue-500" /> Features
+        </h3>
+        <p className="text-gray-600">{features}</p>
+      </div>
+    )}
+  </div>
+);
+
+const VirtualTour = ({ propertyId }) => (
+  <div className="bg-gray-50 shadow-lg rounded-lg p-6 border border-gray-200">
+    <h3 className="text-xl font-semibold text-gray-700 flex items-center gap-2 mb-3">
+      <FaVrCardboard className="text-green-500" /> Virtual Tour
+    </h3>
+    <Link
+      href={`/property/${propertyId}/virtual-tour`}
+      className="bg-red-500 text-white px-4 py-2 rounded"
+    >
+      Click Me
+    </Link>
+  </div>
+);
+
+const AIPricePrediction = ({ id }) => (
+  <div className="bg-gray-50 shadow-lg rounded-lg p-6 border border-gray-200">
+    <h3 className="text-xl font-semibold text-gray-700 flex items-center gap-2 mb-3">
+      <FaAlignLeft className="text-green-500" /> AI Price Prediction
+    </h3>
+    <AIPrice id={id} />
+  </div>
+);
+
+const PropertyLocation = ({ lat, lng, title }) => (
+  <div className="bg-white shadow-lg rounded-lg p-6 border border-gray-200">
+    <h2 className="text-2xl font-semibold text-gray-700">Property Location</h2>
+    <LeafletContainer lat={lat} lng={lng} title={title} />
+  </div>
+);
+
+const SellerInfo = ({ name, email, phone }) => (
+  <div className="bg-white shadow-lg rounded-lg p-6 border border-gray-200">
+    <h2 className="text-2xl font-semibold text-gray-800">Seller Information</h2>
+    <p>
+      <FaUser /> {name}
+    </p>
+    <p>
+      <FaEnvelope /> {email}
+    </p>
+    <p>
+      <FaPhoneAlt /> {phone}
+    </p>
+  </div>
+);
 
 export default page;

@@ -5,7 +5,7 @@ import connectDB from "@/lib/db";
 import { Property } from "@/models/Property";
 import { User } from "@/models/User";
 // import { ObjectId } from "mongoose";
-import { ObjectId } from "mongodb";
+// import { ObjectId } from "mongodb";
 
 const addProperty = async (formDetails) => {
   try {
@@ -14,7 +14,11 @@ const addProperty = async (formDetails) => {
     const { id } = session.user;
     // console.log(user);
     await connectDB();
-    const property = await Property.create({ ...formDetails, ownerId: id });
+    const property = await Property.create({
+      ...formDetails,
+      status: "pending",
+      ownerId: id,
+    });
     const propertyId = property._id;
     console.log("yetem");
     await User.findOneAndUpdate(
@@ -31,18 +35,61 @@ const addProperty = async (formDetails) => {
     return "an error occured during property creation";
   }
 };
+async function markPropertyAsSold(id: string) {
+  try {
+    await connectDB();
+
+    const property = await Property.findById(id);
+    if (!property) return "Property not found";
+
+    property.status = "sold"; // Update the status
+    await property.save();
+
+    return null; // No error, means success
+  } catch (error) {
+    return "Failed to mark as sold";
+  }
+}
+async function markPropertyAsReserved(id: string) {
+  try {
+    await connectDB();
+
+    const property = await Property.findById(id);
+    if (!property) return "Property not found";
+
+    property.status = "reserved"; // Update the status
+    await property.save();
+
+    return null; // No error, means success
+  } catch (error) {
+    return "Failed to mark as sold";
+  }
+}
+async function markPropertyAsActive(id: string) {
+  try {
+    await connectDB();
+
+    const property = await Property.findById(id);
+    if (!property) return "Property not found";
+
+    property.status = "active"; // Update the status
+    await property.save();
+
+    return null; // No error, means success
+  } catch (error) {
+    return "Failed to mark as sold";
+  }
+}
+
 const deleteProperty = async (propId) => {
   try {
     const session = await auth();
     const { id } = session.user;
     await connectDB();
     const property = await Property.findOneAndDelete({
-      _id: new ObjectId(propId),
+      propId,
     });
-    await User.updateOne(
-      { _id: new ObjectId(id) },
-      { $pull: { properties: new ObjectId(propId) } }
-    );
+    await User.updateOne({ id }, { $pull: { properties: propId } });
     // console.log("deleting your property");
 
     console.log("property deleted successfully");
@@ -50,4 +97,26 @@ const deleteProperty = async (propId) => {
     return "an error occured during property deletion";
   }
 };
-export { addProperty, deleteProperty };
+const getPropertyDetails = async (id: string) => {
+  try {
+    await connectDB(); // Ensure MongoDB connection
+    const property = await Property.findById(id); // Use findById
+    return property ? property.virtualImages : [];
+  } catch (error) {
+    console.error("Error fetching property:", error);
+    return [];
+  }
+};
+async function getPendingProperties() {
+  await connectDB();
+  return await Property.find({ status: "pending" }).lean();
+}
+export {
+  addProperty,
+  deleteProperty,
+  getPropertyDetails,
+  getPendingProperties,
+  markPropertyAsSold,
+  markPropertyAsReserved,
+  markPropertyAsActive,
+};

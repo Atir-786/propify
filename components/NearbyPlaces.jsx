@@ -1,19 +1,27 @@
 import React from "react";
 import { FaHospital, FaSchool } from "react-icons/fa";
+
 async function fetchNearbyPlaces(lat, lng) {
-  const radius = 4000; // 2 km
+  const radius = 4000; // 4 km
   const maxResults = 5;
   const url = `https://overpass-api.de/api/interpreter?data=[out:json];(node(around:${radius},${lat},${lng})["amenity"="hospital"];node(around:${radius},${lat},${lng})["amenity"="school"];);out ${maxResults};`;
 
-  const res = await fetch(url);
+  try {
+    const res = await fetch(url);
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch data from Overpass API");
+    if (!res.ok) {
+      console.log("Failed to fetch data from Overpass API");
+      return []; // Return an empty array if the request fails
+    }
+
+    const data = await res.json();
+    return data.elements || [];
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return []; // Return an empty array if an error occurs
   }
-
-  const data = await res.json();
-  return data.elements || [];
 }
+
 function calculateDistance(lat1, lon1, lat2, lon2) {
   const R = 6371; // Earth's radius in km
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
@@ -27,20 +35,17 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return (R * c).toFixed(2); // Distance in km, rounded to 2 decimal places
 }
+
 const NearbyPlaces = async ({ lat, lng }) => {
-  let places = [];
-  try {
-    places = await fetchNearbyPlaces(lat, lng);
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
+  const places = await fetchNearbyPlaces(lat, lng); // Fetch data
+
   const hospitals = places.filter(
     (place) => place.tags?.amenity === "hospital"
   );
   const schools = places.filter((place) => place.tags?.amenity === "school");
+
   return (
     <div className="bg-gray-50 p-6">
-      {/* min-h-screen */}
       <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">
         Nearby Places
       </h1>

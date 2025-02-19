@@ -124,7 +124,7 @@ const propertySchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    default: "Active",
+    default: "active",
   },
 });
 export const Property =

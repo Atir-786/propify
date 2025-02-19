@@ -45,6 +45,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           lastName: user.lasttName,
           email: user.email,
           id: user._id.toString(),
+          role: user.role,
         };
         return userData;
       },
@@ -57,7 +58,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user }) {
       // Include user ID in the token
       if (user) {
-        token.id = user.id; // Assuming `id` is part of the user object
+        token.id = user.id;
+        token.role = user.role;
+        // Assuming `id` is part of the user object
       }
       return token;
     },
@@ -65,6 +68,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // Pass user ID to the session
       if (token?.id) {
         session.user.id = token.id as string;
+        session.user.role = token.role;
       }
       return session;
     },
@@ -81,7 +85,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           const alreadyUser = await User.findOne({ email });
           if (!alreadyUser) {
             console.log(firstName, lastName, email);
-            await User.create({ firstName, lastName, email });
+            await User.create({ firstName, lastName, email, role: "user" });
           }
           // Attach MongoDB `_id` to the `user` object
           user.id = alreadyUser._id.toString(); // Ensure the ID is a string
