@@ -157,16 +157,16 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
 
               <DeletePropertyButton id={id} ownerId={String(ownerId)} />
             </div>
-            {user?.role === "admin" && status === "pending" && (
-              <PropertyActionButton
-                id={id}
-                ownerId={String(ownerId)}
-                action="markAsActive"
-                label="Mark as Active"
-                className="bg-blue-500"
-              />
-            )}
           </>
+        )}
+        {user?.role === "admin" && status === "pending" && (
+          <PropertyActionButton
+            id={id}
+            ownerId={String(ownerId)}
+            action="markAsActive"
+            label="Mark as Active"
+            className="bg-blue-500"
+          />
         )}
       </div>
     );

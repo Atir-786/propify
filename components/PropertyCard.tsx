@@ -7,7 +7,7 @@ import { Button } from "./ui/button";
 
 const PropertyCard = ({ property }) => {
   return (
-    <li className="bg-white shadow-md rounded-xl overflow-hidden transition hover:shadow-lg">
+    <div className="bg-white shadow-md rounded-xl overflow-hidden transition hover:shadow-lg">
       {/* Image Section */}
       <div className="relative h-56 overflow-hidden group">
         <Image
@@ -78,7 +78,7 @@ const PropertyCard = ({ property }) => {
           View Details
         </Link>
       </div>
-    </li>
+    </div>
   );
 };
 
