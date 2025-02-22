@@ -40,6 +40,7 @@ import {
   FaVrCardboard,
 } from "react-icons/fa";
 import Link from "next/link";
+import TourBooking from "../../../components/TourBooking";
 
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const session = await auth();
@@ -100,6 +101,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
           status={status}
           address={{ address, city, state, country, zip }}
         />
+        <TourBooking user={user} propId={String(_id)} />
         <KeyDetails
           {...{
             bedrooms,

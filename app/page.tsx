@@ -7,8 +7,6 @@ const PropertiesList = dynamic(() => import("@/components/PropertiesList"), {
 });
 
 async function page() {
-  // const query = searchParams?.query || "";
-
   return (
     <>
       {/* Hero Section */}
@@ -21,7 +19,7 @@ async function page() {
           range of properties for sale or rent, and make your next move a
           breeze.
         </p>
-        {/* <SearchForm query={query} /> */}
+        <SearchForm />
       </section>
 
       {/* Properties List Section */}

@@ -45,6 +45,11 @@ export default function Navbar({ user }) {
               Dashboard
             </Link>
           )}
+          {user && (
+            <Link href="/bookings" className="hover:text-gray-300">
+              My Bookings
+            </Link>
+          )}
           <Link
             href={user ? "/sell" : "/login"}
             className="hover:text-gray-300"
@@ -110,7 +115,11 @@ export default function Navbar({ user }) {
           >
             My Properties
           </Link>
-
+          {user && (
+            <Link href="/bookings" className="hover:text-gray-300">
+              My Bookings
+            </Link>
+          )}
           {!user ? (
             <>
               <Link

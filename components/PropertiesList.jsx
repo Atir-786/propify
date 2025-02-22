@@ -5,49 +5,38 @@ import connectDB from "@/lib/db";
 import Link from "next/link";
 
 const PropertiesList = async () => {
-  let query = "";
   await connectDB();
 
+  // const searchParams = new URL(req.url).searchParams;
+  // const location = searchParams.get("location") || "";
+  // const price = searchParams.get("price") || "";
+
   let filter = { status: { $ne: "pending" } };
-  let isNumberQuery = false;
-  let parsedNumber = null;
 
-  if (query) {
-    const priceMatch = query.match(/\b(\d+)-(\d+)\b/);
-    const belowMatch = query.match(/\bbelow (\d+)\b/i);
-    const aboveMatch = query.match(/\babove (\d+)\b/i);
-    const numberOnlyMatch = query.match(/^\d+$/); // Match only numbers
+  // // 🔍 Location filter (matches city, state, or country)
+  // if (location) {
+  //   filter.$or = [
+  //     { city: { $regex: location, $options: "i" } },
+  //     { state: { $regex: location, $options: "i" } },
+  //     { country: { $regex: location, $options: "i" } },
+  //   ];
+  // }
 
-    if (priceMatch) {
-      const minPrice = parseInt(priceMatch[1], 10);
-      const maxPrice = parseInt(priceMatch[2], 10);
-      filter.price = { $gte: minPrice, $lte: maxPrice };
-    } else if (belowMatch) {
-      const maxPrice = parseInt(belowMatch[1], 10);
-      filter.price = { $lte: maxPrice };
-    } else if (aboveMatch) {
-      const minPrice = parseInt(aboveMatch[1], 10);
-      filter.price = { $gte: minPrice };
-    } else if (numberOnlyMatch) {
-      // If user types just a number, show suggestions instead
-      isNumberQuery = true;
-      parsedNumber = parseInt(query, 10);
-    } else {
-      filter.$or = [
-        { title: { $regex: query, $options: "i" } },
-        { description: { $regex: query, $options: "i" } },
-        { city: { $regex: query, $options: "i" } },
-        { state: { $regex: query, $options: "i" } },
-        { country: { $regex: query, $options: "i" } },
-      ];
-    }
-  }
+  // // 💲 Price filter
+  // if (price) {
+  //   const priceMatch = price.match(/\b(\d+)-(\d+)\b/); // Example: "100000-200000"
+  //   if (priceMatch) {
+  //     const minPrice = parseInt(priceMatch[1], 10);
+  //     const maxPrice = parseInt(priceMatch[2], 10);
+  //     filter.price = { $gte: minPrice, $lte: maxPrice };
+  //   }
+  // }
 
-  const properties = isNumberQuery ? [] : await Property.find(filter);
+  const properties = await Property.find(filter);
 
   return (
     <>
-      {isNumberQuery && (
+      {/* {isNumberQuery && (
         <div className="flex flex-wrap gap-3 p-4 bg-gray-100 rounded-md">
           <p className="text-gray-700">Did you mean?</p>
           <Link href={`?query=below ${parsedNumber}`} className="btn">
@@ -60,7 +49,7 @@ const PropertiesList = async () => {
             Properties Between $0 - ${parsedNumber}
           </Link>
         </div>
-      )}
+      )} */}
 
       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
         {properties.length > 0 ? (
