@@ -26,17 +26,20 @@ import {
   FaBath,
   FaBed,
   FaBuilding,
+  FaRulerCombined,
+  FaHome,
+  FaCalendarAlt,
+  FaLayerGroup,
+  FaParking,
   FaCalendar,
   FaCouch,
   FaDollarSign,
   FaEnvelope,
-  FaHome,
   FaListAlt,
   FaMapMarkerAlt,
-  FaParking,
   FaPhoneAlt,
-  FaRulerCombined,
   FaUser,
+  FaUserCircle,
   FaVrCardboard,
 } from "react-icons/fa";
 import Link from "next/link";
@@ -94,25 +97,21 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
     // console.log(String(ownerId) === userId);
     return (
       <div className="max-w-6xl mx-auto p-6 space-y-6 bg-gray-50">
-        <ImageSwiper images={images} />
         <PropertyInfo
           title={title}
           price={price}
           status={status}
           address={{ address, city, state, country, zip }}
         />
-        <TourBooking user={user} propId={String(_id)} />
+        <ImageSwiper images={images} />
+
         <KeyDetails
           {...{
             bedrooms,
             bathrooms,
             landSize,
             totalHouseArea,
-            lotArea,
-            livingArea,
-            livingAreaRenovated,
             builtYear,
-            houseGrade,
             floors,
             parking,
           }}
@@ -121,9 +120,13 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
         <PropertyDescription description={description} features={features} />
         {virtualImages.length > 0 && <VirtualTour propertyId={_id} />}
         <AIPricePrediction id={id} />
+
         <PropertyLocation lat={lat} lng={lng} title={title} />
         <NearbyPlaces lat={lat} lng={lng} />
-        <SellerInfo name={name} email={email} phone={phone} />
+        <div className="flex flex-col md:flex-row justify-between items-center">
+          <TourBooking user={user} propId={String(_id)} />
+          <SellerInfo name={name} email={email} phone={phone} />
+        </div>
         {String(ownerId) === userId && (
           <>
             <div className="flex gap-4 justify-end">
@@ -198,14 +201,25 @@ const PropertyInfo = ({ status, title, price, address }) => (
   </div>
 );
 
+const iconMap = {
+  bedrooms: <FaBed className="text-blue-500 text-2xl" />,
+  bathrooms: <FaBath className="text-indigo-500 text-2xl" />,
+  landSize: <FaRulerCombined className="text-green-500 text-2xl" />,
+  totalHouseArea: <FaHome className="text-teal-500 text-2xl" />,
+  builtYear: <FaCalendarAlt className="text-orange-500 text-2xl" />,
+  floors: <FaLayerGroup className="text-purple-500 text-2xl" />,
+  parking: <FaParking className="text-gray-500 text-2xl" />,
+};
+
 const KeyDetails = (props) => (
   <div className="grid grid-cols-2 md:grid-cols-4 gap-6 bg-white shadow-xl rounded-xl p-6 border border-gray-200">
     {Object.entries(props).map(([key, value]) =>
       value !== undefined && value !== null ? (
         <div key={key} className="flex flex-col items-center text-gray-700">
-          <FaBuilding className="text-teal-500 text-2xl" />
-          <span className="font-medium text-center mt-2">
-            {key.replace(/([A-Z])/g, " $1")}: {String(value)}
+          {iconMap[key] || <FaHome className="text-gray-400 text-2xl" />}
+          <span className="font-medium text-center mt-2 capitalize">
+            {key.replace(/([A-Z])/g, " $1")}:{" "}
+            <span className="font-semibold">{String(value)}</span>
           </span>
         </div>
       ) : null
@@ -249,15 +263,18 @@ const PropertyDescription = ({ description, features }) => (
 );
 
 const VirtualTour = ({ propertyId }) => (
-  <div className="bg-gray-50 shadow-lg rounded-lg p-6 border border-gray-200">
-    <h3 className="text-xl font-semibold text-gray-700 flex items-center gap-2 mb-3">
-      <FaVrCardboard className="text-green-500" /> Virtual Tour
+  <div className="bg-white shadow-xl rounded-lg p-6 border border-gray-200 text-center">
+    <h3 className="text-xl font-semibold text-gray-800 flex items-center justify-center gap-2 mb-4">
+      <FaVrCardboard className="text-green-500 text-2xl" /> Virtual Tour
     </h3>
+    <p className="text-gray-600 mb-4">
+      Explore this property in a **360° virtual tour** from anywhere!
+    </p>
     <Link
       href={`/property/${propertyId}/virtual-tour`}
-      className="bg-red-500 text-white px-4 py-2 rounded"
+      className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-3 rounded-lg transition-all duration-300 shadow-md inline-block"
     >
-      Click Me
+      Start Tour
     </Link>
   </div>
 );
@@ -278,19 +295,33 @@ const PropertyLocation = ({ lat, lng, title }) => (
   </div>
 );
 
-const SellerInfo = ({ name, email, phone }) => (
-  <div className="bg-white shadow-lg rounded-lg p-6 border border-gray-200">
-    <h2 className="text-2xl font-semibold text-gray-800">Seller Information</h2>
-    <p>
-      <FaUser /> {name}
-    </p>
-    <p>
-      <FaEnvelope /> {email}
-    </p>
-    <p>
-      <FaPhoneAlt /> {phone}
-    </p>
-  </div>
-);
+const SellerInfo = ({ name, email, phone }) => {
+  return (
+    <div className="bg-white shadow-lg rounded-lg p-6 border border-gray-200 w-80 text-center">
+      <FaUserCircle className="w-24 h-24 mx-auto text-gray-400" />
+      <h2 className="text-xl font-semibold text-gray-800 mt-4">{name}</h2>
+      <p className="text-gray-500 text-sm">Property Owner</p>
+
+      {/* <div className="flex justify-center gap-4 mt-3">
+        <FaFacebook className="text-gray-600 hover:text-blue-600 cursor-pointer" size={20} />
+        <FaTwitter className="text-gray-600 hover:text-blue-400 cursor-pointer" size={20} />
+        <FaInstagram className="text-gray-600 hover:text-pink-500 cursor-pointer" size={20} />
+      </div> */}
+
+      <div className="mt-4 text-left">
+        <p className="flex items-center gap-2 text-gray-700">
+          <FaEnvelope className="text-gray-500" /> {email}
+        </p>
+        <p className="flex items-center gap-2 text-gray-700 mt-2">
+          <FaPhoneAlt className="text-gray-500" /> {phone}
+        </p>
+      </div>
+
+      <button className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full w-full">
+        View Profile
+      </button>
+    </div>
+  );
+};
 
 export default page;

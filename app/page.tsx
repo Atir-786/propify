@@ -24,9 +24,6 @@ async function page() {
 
       {/* Properties List Section */}
       <section className="section_container">
-        {/* <p className="text-30 semi-bold">
-          {query ? `Search results for "${query}"` : "All Properties"}
-        </p> */}
         <PropertiesList />
       </section>
     </>
