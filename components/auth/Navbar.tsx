@@ -46,15 +46,20 @@ export default function Navbar({ user }) {
             </Link>
           )}
           {user && (
+            <Link href="/saved" className="hover:text-gray-300">
+              Favourites
+            </Link>
+          )}
+          {user && (
             <Link href="/bookings" className="hover:text-gray-300">
-              My Bookings
+              Bookings
             </Link>
           )}
           <Link
             href={user ? "/sell" : "/login"}
             className="hover:text-gray-300"
           >
-            Sell Property
+            List Property
           </Link>
           <Link
             href={user ? "/my-properties" : "/login"}
@@ -106,8 +111,13 @@ export default function Navbar({ user }) {
             onClick={toggleMenu}
             className="hover:text-gray-300"
           >
-            Sell Property
+            List Property
           </Link>
+          {user && (
+            <Link href="/saved" className="hover:text-gray-300">
+              Favourites
+            </Link>
+          )}
           <Link
             href={user ? "/my-properties" : "/login"}
             onClick={toggleMenu}
@@ -117,7 +127,7 @@ export default function Navbar({ user }) {
           </Link>
           {user && (
             <Link href="/bookings" className="hover:text-gray-300">
-              My Bookings
+              Bookings
             </Link>
           )}
           {!user ? (

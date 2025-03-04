@@ -7,5 +7,6 @@ const userSchema = new mongoose.Schema({
   properties: { type: Array },
   authProviderId: { type: String },
   role: { type: String, enum: ["user", "admin"], default: "user" },
+  wishlist: { type: Array },
 });
 export const User = mongoose.models?.User || mongoose.model("User", userSchema);

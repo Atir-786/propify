@@ -4,8 +4,12 @@ import { EyeIcon, MapPin } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
-
-const PropertyCard = ({ property }) => {
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
+import WishlistButton from "./WishlistButton";
+const PropertyCard = async ({ property }) => {
+  const session = await auth();
+  const user = session?.user;
   return (
     <div className="bg-white shadow-md rounded-xl overflow-hidden transition hover:shadow-lg">
       {/* Image Section */}
@@ -33,9 +37,7 @@ const PropertyCard = ({ property }) => {
           {property.status}
         </span>
         {/* Favorite (Wishlist) Icon */}
-        <button className="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md">
-          ❤️
-        </button>
+        {user && <WishlistButton id={String(property._id)} />}
       </div>
 
       {/* Content Section */}

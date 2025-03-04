@@ -19,11 +19,12 @@ async function page() {
           range of properties for sale or rent, and make your next move a
           breeze.
         </p>
-        <SearchForm />
       </section>
 
       {/* Properties List Section */}
       <section className="section_container">
+        {/* <SearchForm /> */}
+
         <PropertiesList />
       </section>
     </>

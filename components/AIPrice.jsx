@@ -1,5 +1,6 @@
 import connectDB from "@/lib/db";
 import { Property } from "@/models/Property";
+import { FaAlignLeft } from "react-icons/fa";
 
 export default async function AIPricePrediction({ id }) {
   let price = null;
@@ -48,48 +49,60 @@ export default async function AIPricePrediction({ id }) {
   }
 
   return (
-    <div
-      className="relative min-h-[400px] flex items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat"
-      style={{
-        backgroundImage:
-          "url('https://t3.ftcdn.net/jpg/07/82/01/84/360_F_782018423_8Y5BkW9uG1zj9vrZRsuai7J1BPcigWOo.jpg')",
-      }}
-    >
-      <div className="absolute inset-0 bg-gradient-to-r from-purple-900/70 to-blue-900/70"></div>
+    <div className="bg-gray-50 shadow-lg rounded-lg p-6 border border-gray-200">
+      <h3 className="text-xl font-semibold text-gray-700 flex items-center gap-2 mb-3">
+        <FaAlignLeft className="text-green-500" /> AI Price Prediction
+      </h3>
 
-      <div className="relative z-10 w-full max-w-md mx-auto bg-black/30 border border-purple-500/50 backdrop-blur-sm shadow-lg p-6 rounded-lg">
-        <h2 className="text-3xl font-bold text-center text-white mb-4">
-          AI Price Prediction
-        </h2>
-        {price === null ? (
-          <div className="flex justify-center items-center h-24">
-            <svg
-              className="h-8 w-8 animate-spin text-purple-400"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeDasharray="31.415, 31.415"
-                strokeLinecap="round"
-              ></circle>
-            </svg>
-          </div>
-        ) : (
-          <div className="text-center">
-            <p className="text-sm text-gray-300 mb-2">Predicted Price:</p>
-            <div className="relative inline-block">
-              <span className="text-5xl font-bold text-white animate-pulse">
-                ${price.toLocaleString()}
-              </span>
-              <div className="absolute inset-0 bg-purple-500 opacity-25 blur-xl animate-pulse"></div>
+      <p className="text-gray-600 text-sm mb-4">
+        Our AI-powered model analyzes market trends, location data, and property
+        features to estimate the most accurate price prediction for the property
+        .
+      </p>
+
+      <div
+        className="relative min-h-[400px] flex items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage:
+            "url('https://t3.ftcdn.net/jpg/07/82/01/84/360_F_782018423_8Y5BkW9uG1zj9vrZRsuai7J1BPcigWOo.jpg')",
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-900/70 to-blue-900/70"></div>
+
+        <div className="relative z-10 w-full max-w-md mx-auto bg-black/30 border border-purple-500/50 backdrop-blur-sm shadow-lg p-6 rounded-lg">
+          <h2 className="text-3xl font-bold text-center text-white mb-4">
+            AI Price Prediction
+          </h2>
+          {price === null ? (
+            <div className="flex justify-center items-center h-24">
+              <svg
+                className="h-8 w-8 animate-spin text-purple-400"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                  strokeDasharray="31.415, 31.415"
+                  strokeLinecap="round"
+                ></circle>
+              </svg>
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="text-center">
+              <p className="text-sm text-gray-300 mb-2">Predicted Price:</p>
+              <div className="relative inline-block">
+                <span className="text-5xl font-bold text-white animate-pulse">
+                  ${price.toLocaleString()}
+                </span>
+                <div className="absolute inset-0 bg-purple-500 opacity-25 blur-xl animate-pulse"></div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
