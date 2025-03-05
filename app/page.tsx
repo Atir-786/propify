@@ -1,4 +1,3 @@
-import SearchForm from "@/components/SearchForm";
 import dynamic from "next/dynamic";
 import React from "react";
 
@@ -23,8 +22,6 @@ async function page() {
 
       {/* Properties List Section */}
       <section className="section_container">
-        {/* <SearchForm /> */}
-
         <PropertiesList />
       </section>
     </>

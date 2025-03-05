@@ -15,7 +15,7 @@ const WishlistButton = ({ id }) => {
     };
 
     checkWishlist();
-  }, []);
+  }, [id]);
 
   // Toggle wishlist
   const toggleWishlist = async () => {
