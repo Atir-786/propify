@@ -21,16 +21,25 @@ const WishlistPage = async () => {
 
   // Fetch user and populate wishlist
   const u = await User.findById(user.id);
-  // console.log(u);
+  console.log(u);
   if (!u || !u.wishlist || u.wishlist.length === 0) {
     return <p className="text-center text-gray-500">Your wishlist is empty.</p>;
   }
 
-  // // Query properties only if valid IDs exist
+  // ✅ Convert string IDs to ObjectId
+  const validPropertyIds = u.wishlist
+    .filter((id) => mongoose.Types.ObjectId.isValid(id)) // Check validity
+    .map((id) => new mongoose.Types.ObjectId(id)); // Convert to ObjectId
+
+  if (validPropertyIds.length === 0) {
+    return <p className="text-center text-gray-500">Your wishlist is empty.</p>;
+  }
+
+  // ✅ Query properties using converted ObjectIds
   const wishlistedProperties = await Property.find({
-    _id: { $in: u.wishlist },
+    _id: { $in: validPropertyIds },
   });
-  // console.log(wishlistedProperties);
+  console.log(wishlistedProperties);
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-2xl font-semibold mb-4">Your Wishlist</h1>
