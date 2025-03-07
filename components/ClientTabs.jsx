@@ -27,7 +27,7 @@ const ClientTabs = ({
 
   return (
     <>
-      <ul className="flex border-b">
+      <ul className=" border-b grid grid-cols-3 md:grid-cols-5">
         {[
           { key: "description", label: "Description" },
 
