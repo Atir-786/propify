@@ -56,170 +56,54 @@ const AmenityDetails = ({ register, errors }) => {
           )}
         </div>
       )}
-
-      {/* Fields for House */}
       {propertyType === "house" && (
         <>
-          <div className="mb-4">
-            <Label
-              htmlFor="totalHouseArea"
-              className="block text-gray-700 font-medium"
-            >
-              Total House Area (in sq. ft.)
-            </Label>
-            <Input
-              {...register("totalHouseArea", {
-                required: "total house area is required",
-              })}
-              type="number"
-              id="totalHouseArea"
-              placeholder="Enter total house area"
-              className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-green-500"
-            />
-            {errors.totalHouseArea && (
-              <p className="text-sm text-red-500 mt-1">
-                {errors.totalHouseArea.message}
-              </p>
-            )}
-          </div>
-          {/* Lot area */}
-          <div className="mb-4">
-            <Label
-              htmlFor="lotArea"
-              className="block text-gray-700 font-medium"
-            >
-              Lot Area (in sq. ft.)
-            </Label>
-            <Input
-              {...register("lotArea", { required: "lot area is required" })}
-              type="number"
-              id="lotArea"
-              placeholder="Enter lot area"
-              className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-green-500"
-            />
-            {errors.lotArea && (
-              <p className="text-sm text-red-500 mt-1">
-                {errors.lotArea.message}
-              </p>
-            )}
-          </div>
-          {/* living area */}
-          <div className="mb-4">
-            <Label
-              htmlFor="livingArea"
-              className="block text-gray-700 font-medium"
-            >
-              Living Area (in sq. ft.)
-            </Label>
-            <Input
-              {...register("livingArea", {
-                required: "living area is required",
-              })}
-              type="number"
-              id="livingArea"
-              placeholder="Enter living area"
-              className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-green-500"
-            />
-            {errors.livingArea && (
-              <p className="text-sm text-red-500 mt-1">
-                {errors.livingArea.message}
-              </p>
-            )}
-          </div>{" "}
-          {/* living area renovated */}
-          <div className="mb-4">
-            <Label
-              htmlFor="livingAreaRenovated"
-              className="block text-gray-700 font-medium"
-            >
-              Living Area Renovated (in sq. ft.)
-            </Label>
-            <Input
-              {...register("livingAreaRenovated", {
-                required: "Living Area Renovated is required",
-              })}
-              type="number"
-              id="livingAreaRenovated"
-              placeholder="Enter living Area Renovated"
-              className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-green-500"
-            />
-            {errors.livingAreaRenovated && (
-              <p className="text-sm text-red-500 mt-1">
-                {errors.livingAreaRenovated.message}
-              </p>
-            )}
-          </div>
-          {/* Number of Bedrooms */}
-          <div className="mb-4">
-            <Label
-              htmlFor="bedrooms"
-              className="block text-gray-700 font-medium"
-            >
-              Number of Bedrooms
-            </Label>
-            <Input
-              {...register("bedrooms", {
-                required: "Number of bedrooms is required",
-              })}
-              type="number"
-              id="bedrooms"
-              placeholder="Enter number of bedrooms"
-              className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-green-500"
-            />
-            {errors.bedrooms && (
-              <p className="text-sm text-red-500 mt-1">
-                {errors.bedrooms.message}
-              </p>
-            )}
-          </div>
-          {/* bathrooms */}
-          <div className="mb-4">
-            <Label
-              htmlFor="bathrooms"
-              className="block text-gray-700 font-medium"
-            >
-              Number of Bathrooms
-            </Label>
-            <Input
-              {...register("bathrooms", {
-                required: "Number of bathrooms is required",
-              })}
-              type="number"
-              id="bathrooms"
-              placeholder="Enter number of bathrooms"
-              className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-green-500"
-            />
-            {errors.bathrooms && (
-              <p className="text-sm text-red-500 mt-1">
-                {errors.bathrooms.message}
-              </p>
-            )}
-          </div>
-          {/* Floors */}
-          <div className="mb-4">
-            <Label htmlFor="floors" className="block text-gray-700 font-medium">
-              Number of floors
-            </Label>
-            <Input
-              {...register("floors", {
-                required: "Number of floors is required",
-                min: { value: 1, message: "There must be at least 1 floor" },
-                max: {
-                  value: 100,
-                  message: "Number of floors cannot exceed 100",
-                },
-              })}
-              type="number"
-              id="floors"
-              placeholder="Enter number of floors"
-              className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-green-500"
-            />
-            {errors.floors && (
-              <p className="text-sm text-red-500 mt-1">
-                {errors.floors.message}
-              </p>
-            )}
-          </div>
+          {[
+            { id: "totalHouseArea", label: "Total House Area (in sq. ft.)" },
+            { id: "lotArea", label: "Lot Area (in sq. ft.)" },
+            { id: "livingArea", label: "Living Area (in sq. ft.)" },
+            {
+              id: "livingAreaRenovated",
+              label: "Living Area Renovated (in sq. ft.)",
+            },
+            { id: "bedrooms", label: "Number of Bedrooms" },
+            { id: "bathrooms", label: "Number of Bathrooms" },
+            { id: "floors", label: "Number of Floors", min: 1, max: 100 },
+          ].map(({ id, label, min, max }) => (
+            <div key={id} className="mb-4">
+              <Label htmlFor={id} className="block text-gray-700 font-medium">
+                {label}
+              </Label>
+              <Input
+                {...register(id, {
+                  required: `${label} is required`,
+                  pattern: {
+                    value: /^[0-9]*$/,
+                    message: "Only numeric values are allowed",
+                  },
+                  ...(min && {
+                    min: { value: min, message: `Minimum value is ${min}` },
+                  }),
+                  ...(max && {
+                    max: { value: max, message: `Maximum value is ${max}` },
+                  }),
+                })}
+                type="text"
+                id={id}
+                placeholder={`Enter ${label.toLowerCase()}`}
+                className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-green-500"
+                onInput={(e) =>
+                  (e.target.value = e.target.value.replace(/\D/g, ""))
+                }
+              />
+              {errors[id] && (
+                <p className="text-sm text-red-500 mt-1">
+                  {errors[id].message}
+                </p>
+              )}
+            </div>
+          ))}
+
           {/* Built year */}
           <div className="mb-4">
             <Label

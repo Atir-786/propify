@@ -99,13 +99,15 @@ export default function Navbar({ user }) {
       {/* Mobile Menu Dropdown */}
       {menuOpen && (
         <div className="md:hidden bg-gray-900 text-white shadow-md p-4 flex flex-col space-y-3">
-          <Link
-            href={user ? "/dashboard" : "/login"}
-            onClick={toggleMenu}
-            className="hover:text-gray-300"
-          >
-            Dashboard
-          </Link>
+          {user?.role === "admin" && (
+            <Link
+              href={user ? "/dashboard" : "/login"}
+              onClick={toggleMenu}
+              className="hover:text-gray-300"
+            >
+              Dashboard
+            </Link>
+          )}
           <Link
             href={user ? "/sell" : "/login"}
             onClick={toggleMenu}

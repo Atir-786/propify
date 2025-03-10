@@ -84,19 +84,29 @@ async function markPropertyAsActive(id: string) {
 const deleteProperty = async (propId) => {
   try {
     const session = await auth();
-    const { id } = session.user;
-    await connectDB();
-    const property = await Property.findOneAndDelete({
-      propId,
-    });
-    await User.updateOne({ id }, { $pull: { properties: propId } });
-    // console.log("deleting your property");
+    const userId = session?.user?.id;
+    if (!userId) {
+      throw new Error("User not authenticated");
+    }
 
-    console.log("property deleted successfully");
+    await connectDB();
+
+    // ✅ Correct property deletion
+    const property = await Property.findOneAndDelete({ _id: propId });
+    if (!property) {
+      throw new Error("Property not found");
+    }
+
+    // ✅ Correctly update the user's property list
+    await User.updateOne({ _id: userId }, { $pull: { properties: propId } });
+
+    console.log("Property deleted successfully");
   } catch (error) {
-    return "an error occured during property deletion";
+    console.error("Error deleting property:", error);
+    return "An error occurred during property deletion";
   }
 };
+
 const getPropertyDetails = async (id: string) => {
   try {
     await connectDB(); // Ensure MongoDB connection

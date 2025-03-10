@@ -4,11 +4,15 @@ import { FaAlignLeft } from "react-icons/fa";
 
 export default async function AIPricePrediction({ id }) {
   let price = null;
-
+  console.log("id in AIPRICEPR");
   await connectDB();
   try {
     const property = await Property.findById(id);
-    if (!property) throw new Error("Property not found");
+    console.log("found");
+    if (!property) {
+      console.log("not found");
+      throw new Error("Property not found");
+    }
 
     const {
       bedrooms,

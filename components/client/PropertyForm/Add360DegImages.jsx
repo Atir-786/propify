@@ -19,14 +19,14 @@ const Add360DegImages = ({ register, errors }) => {
           {...register("virtualImages", {
             // required: "Please upload at least 3 pictures",
             validate: (files) => {
-              //   if (!files || files.length === 0) {
-              //     return "Please upload between 3 and 6 pictures";
-              //   }
-              //   if (files.length < 3) {
-              //     return "You must upload at least 3 pictures";
-              //   }
+              if (!files || files.length === 0) {
+                return "Please upload between 1 and 4 pictures";
+              }
+              // if (files.length < 1) {
+              //   return "You must upload at least 3 pictures";
+              // }
               if (files.length > 3) {
-                return "You cannot upload more than 3 pictures";
+                return "You cannot upload more than 4 pictures";
               }
               return true;
             },
