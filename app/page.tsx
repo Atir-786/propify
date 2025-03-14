@@ -1,3 +1,4 @@
+import SearchForm from "@/components/SearchForm";
 import dynamic from "next/dynamic";
 import React from "react";
 
@@ -5,10 +6,11 @@ const PropertiesList = dynamic(() => import("@/components/PropertiesList"), {
   loading: () => <p>Loading...</p>,
 });
 
-async function page() {
+async function page({ searchParams }) {
+  const { location, minPrice, maxPrice, status } = await searchParams;
+
   return (
     <>
-      {/* Hero Section */}
       <section className="pink_container">
         <h1 className="heading">
           Showcase Properties, <br /> Connect with Real Estate
@@ -20,9 +22,19 @@ async function page() {
         </p>
       </section>
 
-      {/* Properties List Section */}
       <section className="section_container">
-        <PropertiesList />
+        <SearchForm
+          status={status}
+          location={location}
+          minPrice={minPrice}
+          maxPrice={maxPrice}
+        />
+        <PropertiesList
+          status={status}
+          location={location}
+          minPrice={minPrice}
+          maxPrice={maxPrice}
+        />
       </section>
     </>
   );

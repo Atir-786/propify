@@ -28,7 +28,8 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx",
-    "app/login/page.jsx"
+    "app/login/page.jsx",
+    "components/SearchForm.jsx"
   ],
   "exclude": ["node_modules"]
 }
