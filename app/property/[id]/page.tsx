@@ -30,16 +30,16 @@ import Tabs from "@/components/Tabs";
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const session = await auth();
   const user = session?.user;
-  console.log(user);
+  // console.log(user);
   const userId = user?.id;
-  console.log(userId);
+  // console.log(userId);
   const { id } = await params;
-  console.log(typeof id);
+  // console.log(typeof id);
   await connectDB();
   try {
     console.log("finding");
     const property = await Property.findById(id);
-    console.log(property);
+    // console.log(property);
     const {
       _id,
       title,
@@ -67,12 +67,12 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
       builtYear,
       parking,
       ownerId,
-      virtualImages,
       status,
     } = property;
     const owner = String(ownerId);
     // console.log("propertyid", _id, typeof _id);
     // console.log(String(ownerId) === userId);
+
     return (
       <div className="max-w-6xl mx-auto p-6 space-y-6 bg-gray-50">
         <PropertyInfo
@@ -95,14 +95,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
           }}
         />
         <Amenities amenities={amenities} />
-        <Tabs
-          id={id}
-          lat={lat}
-          lng={lng}
-          title={title}
-          description={description}
-          features={features}
-        />
+        <Tabs id={id} lat={lat} lng={lng} title={title} />
 
         <div className="flex flex-col md:flex-row justify-between items-center">
           <TourBooking user={user} propId={String(_id)} />

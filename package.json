@@ -33,6 +33,7 @@
     "mongoose": "^8.8.1",
     "next": "15.0.3",
     "next-auth": "^5.0.0-beta.25",
+    "openai": "^4.89.0",
     "photo-sphere-viewer": "^4.8.1",
     "react": "^19.0.0-rc.1",
     "react-dom": "^19.0.0-rc.1",
