@@ -17,6 +17,8 @@ export default async function PropertyDescription({ id }) {
       totalHouseArea,
       floors,
       builtYear,
+      amenities,
+      address,
     } = property;
     const openRouterUrl = "https://openrouter.ai/api/v1/chat/completions";
     const openRouterToken = process.env.OPENROUTER_API_KEY; // Store your key in .env
@@ -32,6 +34,8 @@ export default async function PropertyDescription({ id }) {
     - Total House Area: ${totalHouseArea} sq.ft
     - Floors: ${floors}
     - Built Year: ${builtYear}
+    - Amenities: ${amenities}
+    - Address: ${address}
     
     The generated description should be engaging, informative, and highlight key features.
     `;
@@ -59,13 +63,13 @@ export default async function PropertyDescription({ id }) {
     const data = await response.json();
     // console.log(data);
     AIdescription = data.choices?.[0]?.message?.content;
-    console.log(AIdescription);
+    // console.log(AIdescription);
 
     return (
       <div className="space-y-4">
-        <h2 className="text-2xl font-semibold text-gray-800">
+        {/* <h2 className="text-2xl font-semibold text-gray-800">
           Property Description
-        </h2>
+        </h2> */}
         <p className="text-gray-700">{AIdescription}</p>
       </div>
     );

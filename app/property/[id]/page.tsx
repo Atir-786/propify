@@ -57,7 +57,6 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
       email,
       phone,
       amenities,
-      features,
       images,
       bedrooms,
       bathrooms,

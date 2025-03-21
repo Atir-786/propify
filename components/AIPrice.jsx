@@ -2,7 +2,7 @@ import connectDB from "@/lib/db";
 import { Property } from "@/models/Property";
 import { FaAlignLeft } from "react-icons/fa";
 
-export default async function AIPricePrediction({ id }) {
+const AIPrice = async ({ id }) => {
   let price = null;
   // console.log("id in AIPRICEPR");
   await connectDB();
@@ -110,4 +110,5 @@ export default async function AIPricePrediction({ id }) {
       </div>
     </div>
   );
-}
+};
+export default AIPrice;

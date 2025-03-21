@@ -1,11 +1,15 @@
 import AIPrice from "@/components/AIPrice";
 import NearbyPlaces from "@/components/NearbyPlaces";
-import PropertyDescription from "./PropertyDescription";
+// import PropertyDescription from "./PropertyDescription";
 import LeafletContainer from "@/components/LeafletContainer";
-import VirtualTour from "./360Viewer";
 import Link from "next/link";
 import { FaVrCardboard } from "react-icons/fa";
 import TabsWrapper from "./TabsWrapper";
+import dynamic from "next/dynamic";
+const PropertyDescription = dynamic(() => import("./PropertyDescription"), {
+  loading: () => <p>Loading...</p>,
+});
+
 const Tabs = async ({ id, lat, lng, title }) => {
   return (
     <TabsWrapper>
