@@ -79,7 +79,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
         body: JSON.stringify({ userId: user.id, propertyId: id }),
       });
       const interactionData = await interaction.json();
-      // console.log(interactionData);
+      console.log(interactionData);
       const preference = await fetch(`${baseUrl}/api/preferences`, {
         method: "POST",
         body: JSON.stringify({ userId: user.id, propertyId: id }),

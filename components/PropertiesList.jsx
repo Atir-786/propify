@@ -30,14 +30,13 @@ const PropertiesList = async ({ location, minPrice, maxPrice, status }) => {
     try {
       const baseUrl =
         process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-      const res = await fetch(baseUrl, {
+      // console.log("base is this ", baseUrl);
+      const res = await fetch(`${baseUrl}/api/recommendations`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: user.id }), // or user.id if that's your format
-        cache: "no-store",
+        body: JSON.stringify({ userId: user.id }),
       });
       const recommended = await res.json();
-      console.log("recommendations", recommended);
+      // console.log("recommendations", recommended);
       recommendedIds = Array.isArray(recommended)
         ? recommended.map((p) => String(p._id))
         : [];
