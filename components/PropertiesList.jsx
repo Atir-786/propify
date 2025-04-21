@@ -28,7 +28,9 @@ const PropertiesList = async ({ location, minPrice, maxPrice, status }) => {
   let recommendedIds = [];
   if (user) {
     try {
-      const res = await fetch("http://localhost:3000/api/recommendations", {
+      const baseUrl =
+        process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+      const res = await fetch(baseUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: user.id }), // or user.id if that's your format
