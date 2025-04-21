@@ -7,7 +7,7 @@ const SearchForm = ({ location, minPrice, maxPrice, status }) => {
     <Form
       action="/"
       scroll={false}
-      className="bg-white p-6 rounded-lg shadow-md flex flex-wrap md:flex-nowrap gap-4"
+      className="justify-center bg-white p-6 rounded-lg shadow-md flex flex-wrap md:flex-nowrap gap-4"
     >
       <input
         name="location"

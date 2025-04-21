@@ -10,6 +10,7 @@ import WishlistButton from "./WishlistButton";
 const PropertyCard = async ({ property }) => {
   const session = await auth();
   const user = session?.user;
+
   return (
     <div className="bg-white shadow-md rounded-xl overflow-hidden transition hover:shadow-lg">
       {/* Image Section */}
@@ -42,6 +43,11 @@ const PropertyCard = async ({ property }) => {
 
       {/* Content Section */}
       <div className="p-4 space-y-2">
+        {property.recommended && (
+          <p className="text-blue-600 font-medium text-sm mb-1">
+            🌟 Recommended for You
+          </p>
+        )}
         <h2 className="text-lg font-semibold text-gray-900 truncate">
           {property.title}
         </h2>
@@ -73,6 +79,12 @@ const PropertyCard = async ({ property }) => {
         <span className="text-gray-500 text-xs">
           {formatDate(property.createdAt)}
         </span>
+        {/* <button
+          className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
+          onClick={() => handleClick(property._id)}
+        >
+          View Details
+        </button> */}
         <Link
           href={`/property/${property._id}`}
           className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"

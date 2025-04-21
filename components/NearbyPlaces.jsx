@@ -1,4 +1,3 @@
-import React from "react";
 import { FaHospital, FaSchool } from "react-icons/fa";
 
 async function fetchNearbyPlaces(lat, lng) {

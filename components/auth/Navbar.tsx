@@ -37,37 +37,32 @@ export default function Navbar({ user }) {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex space-x-6 items-center">
+          {/* Admin: show only dashboard */}
           {user?.role === "admin" && (
-            <Link
-              href={user ? "/dashboard" : "/login"}
-              className="hover:text-gray-300"
-            >
+            <Link href="/dashboard" className="hover:text-gray-300">
               Dashboard
             </Link>
           )}
-          {user && (
-            <Link href="/saved" className="hover:text-gray-300">
-              Favourites
-            </Link>
-          )}
-          {user && (
-            <Link href="/bookings" className="hover:text-gray-300">
-              Bookings
-            </Link>
-          )}
-          <Link
-            href={user ? "/sell" : "/login"}
-            className="hover:text-gray-300"
-          >
-            List Property
-          </Link>
-          <Link
-            href={user ? "/my-properties" : "/login"}
-            className="hover:text-gray-300"
-          >
-            My Properties
-          </Link>
 
+          {/* Normal user: show other links */}
+          {user?.role !== "admin" && (
+            <>
+              <Link href="/saved" className="hover:text-gray-300">
+                Favourites
+              </Link>
+              <Link href="/bookings" className="hover:text-gray-300">
+                Bookings
+              </Link>
+              <Link href="/sell" className="hover:text-gray-300">
+                List Property
+              </Link>
+              <Link href="/my-properties" className="hover:text-gray-300">
+                My Properties
+              </Link>
+            </>
+          )}
+
+          {/* Auth links */}
           {!user ? (
             <>
               <Link href="/login" className="hover:text-gray-300">

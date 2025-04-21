@@ -2,17 +2,15 @@ import connectDB from "@/lib/db";
 import { Property } from "@/models/Property";
 import { FaAlignLeft } from "react-icons/fa";
 
-const AIPrice = async ({ id }) => {
-  let price = null;
-  // console.log("id in AIPRICEPR");
+async function AIPrice({ id }) {
+  let price = "loading";
+  let hasError = false;
+
   await connectDB();
   try {
     const property = await Property.findById(id);
-    // console.log("found");
-    if (!property) {
-      console.log("not found");
-      throw new Error("Property not found");
-    }
+
+    if (!property) throw new Error("Property not found");
 
     const {
       bedrooms,
@@ -46,10 +44,14 @@ const AIPrice = async ({ id }) => {
       "https://priceprediction-zdv5.onrender.com/predict",
       requestOptions
     );
+
+    if (!res.ok) throw new Error("Failed to fetch prediction");
+
     const data = await res.json();
     price = data.prediction;
   } catch (error) {
     console.error("Error fetching price prediction:", error);
+    hasError = true;
   }
 
   return (
@@ -60,8 +62,8 @@ const AIPrice = async ({ id }) => {
 
       <p className="text-gray-600 text-sm mb-4">
         Our AI-powered model analyzes market trends, location data, and property
-        features to estimate the most accurate price prediction for the property
-        .
+        features to estimate the most accurate price prediction for the
+        property.
       </p>
 
       <div
@@ -77,7 +79,8 @@ const AIPrice = async ({ id }) => {
           <h2 className="text-3xl font-bold text-center text-white mb-4">
             AI Price Prediction
           </h2>
-          {price === null ? (
+
+          {price === "loading" ? (
             <div className="flex justify-center items-center h-24">
               <svg
                 className="h-8 w-8 animate-spin text-purple-400"
@@ -95,6 +98,10 @@ const AIPrice = async ({ id }) => {
                 ></circle>
               </svg>
             </div>
+          ) : hasError ? (
+            <div className="text-center text-red-300 text-sm">
+              Failed to get AI prediction. Please try again later.
+            </div>
           ) : (
             <div className="text-center">
               <p className="text-sm text-gray-300 mb-2">Predicted Price:</p>
@@ -110,5 +117,6 @@ const AIPrice = async ({ id }) => {
       </div>
     </div>
   );
-};
+}
+
 export default AIPrice;

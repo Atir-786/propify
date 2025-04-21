@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import SearchForm from "@/components/SearchForm";
 import dynamic from "next/dynamic";
 import React from "react";
@@ -7,6 +8,8 @@ const PropertiesList = dynamic(() => import("@/components/PropertiesList"), {
 });
 
 async function page({ searchParams }) {
+  const session = await auth();
+  const user = session?.user;
   const { location, minPrice, maxPrice, status } = await searchParams;
 
   return (

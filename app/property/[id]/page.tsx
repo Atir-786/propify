@@ -71,7 +71,22 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
     const owner = String(ownerId);
     // console.log("propertyid", _id, typeof _id);
     // console.log(String(ownerId) === userId);
-
+    if (user) {
+      const baseUrl =
+        process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+      const interaction = await fetch(`${baseUrl}/api/interactions`, {
+        method: "POST",
+        body: JSON.stringify({ userId: user.id, propertyId: id }),
+      });
+      const interactionData = await interaction.json();
+      // console.log(interactionData);
+      const preference = await fetch(`${baseUrl}/api/preferences`, {
+        method: "POST",
+        body: JSON.stringify({ userId: user.id, propertyId: id }),
+      });
+      const preferenceData = await preference.json();
+      // console.log(preferenceData);
+    }
     return (
       <div className="max-w-6xl mx-auto p-6 space-y-6 bg-gray-50">
         <PropertyInfo
@@ -132,10 +147,11 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
                   />
                 )}
               </>
-
-              <DeletePropertyButton id={id} ownerId={String(ownerId)} />
             </div>
           </>
+        )}
+        {(user?.role === "admin" || String(ownerId) === userId) && (
+          <DeletePropertyButton id={id} ownerId={String(ownerId)} />
         )}
         {user?.role === "admin" && status === "pending" && (
           <PropertyActionButton
