@@ -250,9 +250,9 @@ const SellerInfo = ({ name, email, phone }) => {
         </p>
       </div>
 
-      <button className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full w-full">
+      {/* <button className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full w-full">
         View Profile
-      </button>
+      </button> */}
     </div>
   );
 };
