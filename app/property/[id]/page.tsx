@@ -89,6 +89,18 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
     }
     return (
       <div className="max-w-6xl mx-auto p-6 space-y-6 bg-gray-50">
+        {(user?.role === "admin" || String(ownerId) === userId) && (
+          <DeletePropertyButton id={id} ownerId={String(ownerId)} />
+        )}
+        {user?.role === "admin" && status === "pending" && (
+          <PropertyActionButton
+            id={id}
+            ownerId={String(ownerId)}
+            action="markAsActive"
+            label="Mark as Active"
+            className="bg-blue-500"
+          />
+        )}
         <PropertyInfo
           title={title}
           price={price}
@@ -149,18 +161,6 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
               </>
             </div>
           </>
-        )}
-        {(user?.role === "admin" || String(ownerId) === userId) && (
-          <DeletePropertyButton id={id} ownerId={String(ownerId)} />
-        )}
-        {user?.role === "admin" && status === "pending" && (
-          <PropertyActionButton
-            id={id}
-            ownerId={String(ownerId)}
-            action="markAsActive"
-            label="Mark as Active"
-            className="bg-blue-500"
-          />
         )}
       </div>
     );
