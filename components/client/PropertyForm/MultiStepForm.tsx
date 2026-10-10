@@ -71,6 +71,8 @@ const MultiStepForm = () => {
     control,
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm({ shouldUnregister: false });
 
@@ -135,7 +137,7 @@ const MultiStepForm = () => {
             {step === 5 && (
               <AmenityDetails register={register} errors={errors} />
             )}
-            {step === 6 && <ImageDetails register={register} errors={errors} />}
+            {step === 6 && <ImageDetails register={register} errors={errors} setValue={setValue} watch={watch} />}
             {step === 7 && (
               <Add360DegImages register={register} errors={errors} />
             )}

@@ -72,7 +72,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
     signIn: async ({ user, account }) => {
-      if (account?.provider === "google" || "github") {
+      if (account?.provider === "google" || account?.provider === "github") {
         try {
           const { email, name } = user;
           console.log("hiii");
@@ -81,13 +81,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             ? name.split(" ")
             : ["unknown"];
           const lastName = lastNameParts.join(" ") || "";
-          const alreadyUser = await User.findOne({ email });
-          if (!alreadyUser) {
+          let userDoc = await User.findOne({ email });
+          if (!userDoc) {
             console.log(firstName, lastName, email);
-            await User.create({ firstName, lastName, email, role: "user" });
+            userDoc = await User.create({ firstName, lastName, email, role: "user" });
           }
           // Attach MongoDB _id to the user object
-          user.id = alreadyUser._id.toString(); // Ensure the ID is a string
+          user.id = userDoc._id.toString(); // Ensure the ID is a string
           return true;
         } catch (error) {
           console.error("error while creating user", error);
