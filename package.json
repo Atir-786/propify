@@ -10,6 +10,9 @@
     "test": "jest"
   },
   "packageManager": "npm@10.5.2",
+  "engines": {
+    "node": "24.x"
+  },
   "overrides": {
     "react": "$react",
     "react-dom": "$react-dom"
