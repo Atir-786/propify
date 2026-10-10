@@ -57,8 +57,11 @@ const workSans = localFont({
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  // Keep your existing metadata here
+  title: "Propify",
+
   verification: {
-    google: "YOUR_VERIFICATION_VALUE",
+    google: "cmsbSv-NW7r4I5hx__ngWMz1SunDDL0j5kawTaBZUq8",
   },
 };
 export default async function RootLayout({ children }) {
