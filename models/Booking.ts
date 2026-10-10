@@ -20,5 +20,5 @@ const BookingSchema = new mongoose.Schema({
     default: "pending",
   },
 });
-export const Booking =
+export const Booking: mongoose.Model<any> =
   mongoose.models?.Booking || mongoose.model("Booking", BookingSchema);

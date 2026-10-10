@@ -8,5 +8,8 @@ const UserInteractionSchema = new mongoose.Schema({
   lastViewed: { type: Date, default: Date.now },
 });
 
-export default mongoose.models.UserInteraction ||
+const UserInteraction: mongoose.Model<any> =
+  mongoose.models.UserInteraction ||
   mongoose.model("UserInteraction", UserInteractionSchema);
+
+export default UserInteraction;

@@ -30,14 +30,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         await connectDB();
         const user = await User.findOne({ email }).select("+password");
         if (!user) {
-          throw new CredentialsSignin({ cause: "invalid email or password" });
+          throw new CredentialsSignin(undefined, { cause: "invalid email or password" });
         }
         if (!user.password) {
-          throw new CredentialsSignin({ cause: "invalid email or password" });
+          throw new CredentialsSignin(undefined, { cause: "invalid email or password" });
         }
         const isMatched = password === user.password;
         if (!isMatched) {
-          throw new CredentialsSignin({ cause: "password did not match" });
+          throw new CredentialsSignin(undefined, { cause: "password did not match" });
         }
         const userData = {
           firstName: user.firstName,

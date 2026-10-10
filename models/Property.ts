@@ -127,5 +127,5 @@ const propertySchema = new mongoose.Schema({
     default: "active",
   },
 });
-export const Property =
+export const Property: mongoose.Model<any> =
   mongoose.models?.Property || mongoose.model("Property", propertySchema);

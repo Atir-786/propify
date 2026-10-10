@@ -9,4 +9,4 @@ const userSchema = new mongoose.Schema({
   role: { type: String, enum: ["user", "admin"], default: "user" },
   wishlist: { type: Array },
 });
-export const User = mongoose.models?.User || mongoose.model("User", userSchema);
+export const User: mongoose.Model<any> = mongoose.models?.User || mongoose.model("User", userSchema);

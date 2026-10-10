@@ -11,5 +11,8 @@ const UserPreferenceSchema = new mongoose.Schema({
   preferredStatus: String,
 });
 
-export default mongoose.models.UserPreference ||
+const UserPreference: mongoose.Model<any> =
+  mongoose.models.UserPreference ||
   mongoose.model("UserPreference", UserPreferenceSchema);
+
+export default UserPreference;
